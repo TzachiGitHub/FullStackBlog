@@ -1,0 +1,10 @@
+.header-links {
+    display: flex;
+    justify-content: space-between;
+}
+.header-link{
+    padding: 1px;
+}
+.header-link-login{
+    float: right;
+}
