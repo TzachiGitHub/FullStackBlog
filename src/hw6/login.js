@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-class Login extends React.Component {
+export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,12 +26,13 @@ class Login extends React.Component {
     }
 
     doLogin = (e) => {
-        const url = "http://localhost:5000/login";
+        const localUrl = "http://localhost:5000/login";
+        //const deployUrl = "/login";
         const data = {
             name: this.state.name,
             password: this.state.password
         }
-        axios.post(url, data)
+        axios.post(localUrl, data)
             .then((res) => {
                 if(res.status === 200) {
                     this.setState({
@@ -39,7 +40,9 @@ class Login extends React.Component {
                         resp: "Success: user logged in."
                     });
                     console.log(res)
-                    axios.get("http://localhost:5000/getidbyname/" + this.state.name)
+                    let localUrlGetIdByName = "http://localhost:5000/getidbyname/" + this.state.name
+                    //let deployUrlGetIdByName = "/getidbyname/" + this.state.name;
+                    axios.get(localUrlGetIdByName)
                         .then((resTwo)=>{
                             this.props.onLogin({onLogin: true, userId: resTwo.data.id})
                             this.props.history.push("/")
@@ -76,4 +79,4 @@ class Login extends React.Component {
         );
     }
 }
-export default Login;
+

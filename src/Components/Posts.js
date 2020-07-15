@@ -3,20 +3,25 @@ import axios from 'axios';
 import Post from "../hw4/Post";
 import "../Stylies/posts.css";
 
-class Posts extends Component{
+export default class Posts extends Component{
     constructor(props) {
         super(props);
         this.state = {
             data: [],
-            resp: false
+            resp: false,
+            isLoggedIn: this.props.isLoggedIn,
         };
     }
 
     componentDidMount () {
-        const url = "http://localhost:5000/posts"
-        axios.get(url)
+        const {isLoggedIn}= this.state
+        //console.log("isLoggedIn from posts" + isLoggedIn)
+        const localUrl = "http://localhost:5000/posts"
+        //const deployUrl = "/posts"
+
+        axios.get(localUrl)
             .then((res) => {
-                // console.log(res.data)
+                 console.log( "this is res.data   " + res.data)
                 this.setState({
                     data: res.data,
                     resp: true
@@ -33,45 +38,25 @@ class Posts extends Component{
 
     render() {
         if (this.state) {
-           const {data, resp} = this.state;
-            console.log("from Posts: resp = " + resp)
+           const {data, resp, isLoggedIn} = this.state;
+            // console.log("from Posts: resp = " + resp)
             return (
                     <div>
                         {resp &&
                         data.map((post =>
                             <Post
+                                post={post}
+                                savePost={this.props.savePost}
                                 title={post.title}
                                 content={post.content}
                                 published={post.published}
                                 author={post.author}
                                 imageurl={post.imageurl}
+                                id={post.id}
+                                isLoggedIn={isLoggedIn}
                             />))
                         }
                     </div>)
         }
     }
 }
-
-
-
-// function my_post(props) {
-//     return (
-//         <div className="post-container">
-//             <div className="post">
-//                 <label className="post-title">
-//                     {props.title}
-//                 </label>
-//                 <p className="post-content">
-//                     {props.content}
-//                 </p>
-//                 <img width="90" height="90" className="post-image" src={props.image}/>
-//                 <label className="post-footer">
-//                     Published {props.published} by {props.author}
-//                 </label>
-//             </div>
-//         </div>
-//     );
-// }
-
-export default Posts;
-

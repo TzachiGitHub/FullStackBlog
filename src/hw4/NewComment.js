@@ -3,21 +3,27 @@ import axios from 'axios';
 import '../Stylies/NewPost.css';
 
 
-export default class NewPost extends React.Component {
+export default class NewComment extends React.Component {
     constructor(props) {
         super(props);
+        console.log("props from newcomment")
+        console.log(this.props)
         this.state = {
-            userId: this.props.userId,
-            data: [],
-            id : null,
+            myPost: this.props.myPost,
             title: null,
             content: null,
-            published: null,
-            author : null,
-            imageurl :null,
-            resp: null
+            author: this.props.myPost.author,
+            authorId: this.props.myPost.authorId,
+            postId: this.props.match.params.id
         };
+
+        console.log("this.props from newcomment")
+        console.log(this.props)
+        console.log("this.state from newcomment")
+        console.log(this.state)
+
     }
+
 
     EditTitle = (e) => {
         this.setState({
@@ -30,45 +36,29 @@ export default class NewPost extends React.Component {
         });
     }
 
-    EditImageUrl = (e) => {
-        this.setState({
-            imageurl: e.target.value,
-        });
-    }
-
-    EditPublished = (e) => {
-        this.setState({
-            published: e.target.value,
-        });
-    }
-    EditAuthor = (e) => {
-        this.setState({
-            author: e.target.value,
-        });
-    }
 
 
-    addPost = (e) => {
-        const localUrl = "http://localhost:5000/posts";
-        //const deployUrl = "/posts/";
+    addComment = (e) => {
+        const {postId} = this.state
+        console.log("from addComment: this.state ==")
+        console.log(this.state)
+        const localUrl = "http://localhost:5000/comment/" + postId;
+        //const deployUrl = "/comments/";
         const data = {
-            userId: this.state.userId,
             title: this.state.title,
             content: this.state.content,
-            published:this.state.published,
             author:this.state.author,
-            imageurl: this.state.imageurl
+            authorId: this.state.authorId,
+            postId: postId
         }
         axios.post(localUrl, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
                         data: [res.data],
-                        resp: "Success: user add post.",
-                        gotPostData: true,
+                        resp: "Success: user add comment.",
                     });
                     this.props.history.push('/')
-
                 }
             })
             .catch((err) => {
@@ -80,17 +70,16 @@ export default class NewPost extends React.Component {
     }
 
     render() {
+        console.log("id from newComment" + this.props.id)
         return (
+
             <div>
-                <h2>Create New Post</h2>
+                <h2>Add comment</h2>
                 <div>
                     <p>title: <input type="text" onChange={this.EditTitle} placeholder={"Enter title"} required></input><br/></p>
                     <p> content: <input type="text" onChange={this.EditContent} placeholder="Enter post" required></input><br/></p>
-                    <p>published: <input type="text" onChange={this.EditPublished} placeholder="Enter post" required></input><br/></p>
-                    <p>author: <input type="text" onChange={this.EditAuthor} placeholder="Enter name" required></input><br/></p>
-                    <p>image url: <input type="text" onChange={this.EditImageUrl} placeholder="Enter Image Url" required></input><br/></p>
                 </div>
-                <button onClick={this.addPost}>add Post</button><br/>
+                <button onClick={this.addComment}>add Comment</button><br/>
             </div>
         );
     }

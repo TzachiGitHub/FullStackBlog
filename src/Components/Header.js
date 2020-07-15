@@ -9,15 +9,6 @@ class Header extends React.Component {
         };
     }
 
-    showUnRegistered(){
-            return(
-                <div>
-                    <Link to="/Login" className="header-link-login">Login </Link>
-                    <Link to="/signup" className="header-link-login">signup </Link>
-                </div>
-            )
-    }
-
  render() {
      return (
          <header>
@@ -31,7 +22,13 @@ class Header extends React.Component {
                      <Link to="/newPost"> New Post </Link>
                  </div>
 
-                 {!this.props.isLoggedIn && this.showUnRegistered()}
+                 {!this.props.isLoggedIn &&
+                    <div>
+                        <Link to="/signup">signup</Link>
+                         <span>  |  </span>
+                         <Link to="/Login">Login </Link>
+                    </div>
+                 }
                  {this.props.isLoggedIn &&
                     <Link to="/" onClick={this.props.onLogout} >logout </Link>
                  }

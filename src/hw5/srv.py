@@ -5,17 +5,42 @@ import bcrypt
 import uuid
 from flask_cors import CORS
 
+# db = mysql.connect(
+#     host="my-rds.cmpq1mavlbmq.us-east-1.rds.amazonaws.com",
+#     port=3306,
+#     user="admin",
+#     password="beni",
+#     database="beni"
+#     )
+
+
 db = mysql.connect(
-    host='localhost',
-    user='root',
-    password= 'Beni',
-    database='beni'
+  host='localhost',
+  user='root',
+  password= 'Beniandsara2020',
+  database='beni'
 )
 
-print(db)
-
+# print(db)
+#
 app = Flask(__name__)
 CORS(app)
+            # static_folder='/home/ubuntu/build',
+            # //static_url_path='/')
+@app.route('/kjh', methods=['GET'])
+def main():
+    return "WTF??"
+
+# @app.route('/', methods=['GET'])
+# def main():
+#     return app.send_static_file("index.html")
+
+#
+# @app.route('/api/alive', methods=['GET'])
+# def alive_check():
+#     return "Alive!"
+
+
 
 @app.route('/logout/<id>', methods=['POST'])
 def logout(id):
@@ -41,8 +66,8 @@ def Get_Post_by_Id(id):
 
 def add_post():
     data = request.get_json()
-    query = "insert into posts (title,content,published,author,imageurl) values (%s,%s,%s,%s, %s)"
-    values = (data['title'], data['content'], data['published'], data['author'], data['imageurl'])
+    query = "insert into posts (title,content,published,author,imageurl, author_id) values (%s,%s,%s,%s, %s, %s)"
+    values = (data['title'], data['content'], data['published'], data['author'], data['imageurl'], data['userId'])
     cursor = db.cursor()
     cursor.execute(query, values)
     db.commit()
@@ -52,27 +77,34 @@ def add_post():
 
 
 def get_post(id):
-    query = "select id, title, content, published, author, imageurl from posts where id = %s"
+    query = "select id, title, content, published, author, imageurl, author_id from posts where id = %s"
     value = (id,)
     cursor = db.cursor()
     cursor.execute(query, value)
     record = cursor.fetchone()
-    header = ['id', 'title', 'content', 'published', 'author', 'imageurl']
+    header = ['id', 'title', 'content', 'published', 'author', 'imageurl', 'authorId']
     cursor.close()
     return json.dumps(dict(zip(header, record)))
 
 
 def get_all_posts():
-    query = "select id, title, content, published, author, imageurl from posts"
+    # checkQuery = "SELECT EXISTS (SELECT 1 FROM posts);"
+    # cursor = db.cursor()
+    # cursor.execute(checkQuery,)
+    # record = cursor.fetchone()
+    # if record <= 0:
+    #     return"is empty"
+
+    query = "select id, title, content, published, author, imageurl, author_id from posts"
     cursor = db.cursor()
-    cursor.execute(query)
+    cursor.execute(query,)
     records = cursor.fetchall()
     if not records:
         cursor.close();
         abort(405)
     cursor.close()
-    print(records)
-    header = ['id', 'title', 'content', 'published', 'author', 'imageurl']
+
+    header = ['id', 'title', 'content', 'published', 'author', 'imageurl', 'authorId']
     data = []
     for r in records:
         data.append(dict(zip(header, r)))
@@ -82,7 +114,6 @@ def get_all_posts():
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-    print(data)
     query = "select id, password from users where name = %s"
     values = (data['name'],)
     cursor = db.cursor()
@@ -95,8 +126,8 @@ def login():
     user_id = record[0]
     user_pwd = record[1]
     hashed_pwd = user_pwd.encode('utf-8')
-    print(user_pwd)
-    print(hashed_pwd)
+    # print(user_pwd)
+    # print(hashed_pwd)
 
     if bcrypt.hashpw(data['password'].encode('utf-8'), hashed_pwd) != hashed_pwd:
 
@@ -130,7 +161,7 @@ def get_id(name):
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
-    print(data)
+
     query = "select id, name from users where name = %s"
     values = (data['name'],)
     cursor = db.cursor()
@@ -139,11 +170,10 @@ def signup():
     if record:
         cursor.close()
         abort(401)
-
     query = "insert into users (name, password) values (%s, %s)"
     hashedPass = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
-    print(hashedPass)
-    values = (data['name'],hashedPass)
+    # print(hashedPass)
+    values = (data['name'], hashedPass)
     cursor.execute(query, values)
     db.commit()
 
@@ -162,6 +192,104 @@ def signup():
     resp.set_cookie("session_id", session_id)
     cursor.close()
     return resp
+
+@app.route('/edit', methods=['POST'])
+def edit():
+    data = request.get_json()
+    # print("data: == ")
+    # print(data)
+    author_query = "select author_id from posts where id=%s"
+    author_value = (data['postId'], )
+    cursor = db.cursor()
+    cursor.execute(author_query, author_value)
+    record = cursor.fetchone()
+    if not record:
+        cursor.close()
+        abort(401)
+    # print(record)
+    if data['authorId'] != record[0]:
+        cursor.close()
+        abort(403)
+
+    query = "update posts set title=%s, content=%s, published=%s, author=%s, imageUrl=%s, author_id=%s where id=%s"
+    values = (data['title'], data['content'], data['published'], data['author'], data['imageurl'], data['authorId'], data['postId'])
+    cursor.execute(query, values)
+    cursor.close()
+    return "success edit post "
+
+
+@app.route('/comment/<id>', methods=['GET', 'POST'])
+def manage_requests2(id):
+    if request.method == 'GET':
+        return get_all_comments(id)
+    else:
+        return add_comment(id)
+
+def add_comment(id):
+    data = request.get_json()
+
+    query = "insert into comments (title, content, author, author_id, post_id) values (%s,%s,%s,%s,%s) on duplicate key update post_id = %s"
+    # print(data['userId'])
+    values = (data['title'], data['content'], data['author'], data['authorId'], data['postId'], data['postId'])
+    cursor = db.cursor()
+    cursor.execute(query, values)
+    db.commit()
+    add_comment_id = cursor.lastrowid
+    # print("add_comment_id=")
+    # print(str(add_comment_id))
+    cursor.close()
+    return get_comment(add_comment_id)
+
+
+def get_comment(id):
+    query = "select id, title, content, author, author_id from comments where id = %s"
+    value = (id,)
+    cursor = db.cursor()
+    cursor.execute(query, value)
+    record = cursor.fetchone()
+    header = ['id', 'title',  'author', 'content', 'authorId']
+    cursor.close()
+    return json.dumps(dict(zip(header, record)))
+
+
+def get_all_comments(id):
+    query = "select id, title, content, author, author_id, post_id from comments where post_id=%s"
+    value = (id, )
+    cursor = db.cursor()
+    cursor.execute(query, value)
+    records = cursor.fetchall()
+    if not records:
+        cursor.close();
+        abort(405)
+    cursor.close()
+    # print(records)
+    header = ['id', 'title', 'content', 'author', 'author_id', 'post_id']
+    data = []
+    for r in records:
+        data.append(dict(zip(header, r)))
+    return json.dumps(data)
+
+@app.route('/delete/<id>', methods=['POST'])
+def delete_comment(id):
+    print(id)
+    queryComment = "delete from comments where post_id =%s"
+    value = (id, )
+    cursor = db.cursor()
+    cursor.execute(queryComment, value)
+    db.commit()
+    cursor.close()
+
+    queryPost = "delete from posts where id = %s"
+    value = (id, )
+    cursor = db.cursor()
+    cursor.execute(queryPost, value)
+    db.commit()
+    cursor.close()
+
+    return "Succeeded to delete comments for post_id"
+
+
+
 
 if __name__ == "__main__":
     app.run()

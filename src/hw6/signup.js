@@ -8,6 +8,7 @@ export default class Signup extends React.Component {
             name: null,
             password: null,
             data: [],
+            userId:null,
             resp: null
         };
     }
@@ -26,24 +27,28 @@ export default class Signup extends React.Component {
     }
 
     doSignup = (e) => {
-        let url = "http://localhost:5000/signup";
+        let localUrl = "http://localhost:5000/signup";
+        //let deployUrl = "/signup";
         const data = {
             name: this.state.name,
             password: this.state.password
         }
-        axios.post(url, data)
+        axios.post(localUrl, data)
             .then((res) => {
                 if(res.status === 200) {
                     this.setState({
                         data: [],
                         resp: "Success: user signup."
                     });
-                    let urlForId = "http://localhost:5000/getidbyname/" + this.state.name;
-                    axios.get(urlForId).then(response=>{
+                    let localUrlForId = "http://localhost:5000/getidbyname/" + this.state.name;
+                    //let deployUrlForId = "/getidbyname/" + this.state.name;
+
+                    axios.get(localUrlForId).then(response=>{
                         if(response.status === 200){
                             this.props.onLogin({onLogin: true, userId: response.data.id })
                             this.props.history.push("/")
                         }
+                        console.log("userId from siupgn =  " + this.userId)
                     })
                         .catch(er=>{
                             console.log(er);
@@ -63,7 +68,6 @@ export default class Signup extends React.Component {
 
     }
 
-
     render() {
         return (
                 <div>
@@ -72,7 +76,6 @@ export default class Signup extends React.Component {
                     password: <input type="password" onChange={this. changePassword} placeholder="Enter Password" required></input><br/>
                     <button onClick={this.doSignup}>send</button><br/>
                 </div>
-
         );
     }
 }
