@@ -14,7 +14,7 @@ import Comments from "./Components/Comments";
 import NewComment from "./hw4/NewComment";
 import SingleComment from "./Components/SingleComment";
 import Delete from "./Components/Delete";
-import Check from "./Components/check";
+
 
 class App extends React.Component {
     constructor(props) {
@@ -94,7 +94,6 @@ onLogout = (props) => {
                         <Route path="/edit" component={(props) => <Edit {...props} userId={userId} myPost={mypost}/>}/>
                         <Route path="/newComment/:id" component={(props) => <NewComment {...props} myPost={mypost}/>}/>
                         <Route path="/delete" component={(props) => <Delete {...props} myPost={mypost}/>}/>
-                        <Route path="/check" component={(props) => <Check {...props} myPost={mypost}/>}/>
                         <Route exact path="/" component={(props)=> <Home savePost={this.onSavePost} isLoggedIn={isLoggedIn}/>}/>
                     </Switch>
                 </Router>
