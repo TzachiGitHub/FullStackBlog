@@ -17,16 +17,16 @@ class Header extends React.Component {
                      <span className="header-link"> </span>
                      <Link to="/"> Home </Link>
                      <span className="header-link"> | </span>
-                     <Link to="/AboutMe"> About Me </Link>
+                     <Link to="/aboutme"> About Me </Link>
                      <span className="header-link"> | </span>
-                     <Link to="/newPost"> New Post </Link>
+                     <Link to="/newpost"> New Post </Link>
                  </div>
 
                  {!this.props.isLoggedIn &&
                     <div>
                         <Link to="/signup">signup</Link>
                          <span>  |  </span>
-                         <Link to="/Login">Login </Link>
+                         <Link to="/login">Login </Link>
                     </div>
                  }
                  {this.props.isLoggedIn &&

@@ -8,15 +8,16 @@ export default class NewPost extends React.Component {
         super(props);
         this.state = {
             userId: this.props.userId,
+            username:this.props.username,
             data: [],
             id : null,
             title: null,
             content: null,
             published: null,
             author : null,
-            imageurl :null,
-            resp: null
+            imageUrl :null,
         };
+
     }
 
     EditTitle = (e) => {
@@ -30,52 +31,41 @@ export default class NewPost extends React.Component {
         });
     }
 
-    EditImageUrl = (e) => {
-        this.setState({
-            imageurl: e.target.value,
-        });
-    }
-
     EditPublished = (e) => {
         this.setState({
             published: e.target.value,
         });
     }
-    EditAuthor = (e) => {
+
+    EditImageUrl = (e) => {
         this.setState({
-            author: e.target.value,
+            imageUrl: e.target.value,
         });
     }
 
 
     addPost = (e) => {
-        const localUrl = "http://localhost:5000/posts";
-        //const deployUrl = "/posts/";
+        const Url = "http://localhost:5000/newpost";
+        //const Url = "/newpost";
         const data = {
             userId: this.state.userId,
             title: this.state.title,
             content: this.state.content,
             published:this.state.published,
-            author:this.state.author,
-            imageurl: this.state.imageurl
+            username:this.state.username,
+            imageUrl: this.state.imageUrl
         }
-        axios.post(localUrl, data)
+        axios.post(Url, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
                         data: [res.data],
-                        resp: "Success: user add post.",
-                        gotPostData: true,
                     });
                     this.props.history.push('/')
-
                 }
             })
             .catch((err) => {
-                this.setState({
-                    data: [],
-                    resp: "Error: failed to add post."
-                });
+                console.log(err)
             });
     }
 
@@ -85,9 +75,8 @@ export default class NewPost extends React.Component {
                 <h2>Create New Post</h2>
                 <div>
                     <p>title: <input type="text" onChange={this.EditTitle} placeholder={"Enter title"} required></input><br/></p>
-                    <p> content: <input type="text" onChange={this.EditContent} placeholder="Enter post" required></input><br/></p>
-                    <p>published: <input type="text" onChange={this.EditPublished} placeholder="Enter post" required></input><br/></p>
-                    <p>author: <input type="text" onChange={this.EditAuthor} placeholder="Enter name" required></input><br/></p>
+                    <p> content: <input type="text" onChange={this.EditContent} placeholder={"Enter post"} required></input><br/></p>
+                    <p>published: <input type="text" onChange={this.EditPublished} placeholder={"Enter post"} required></input><br/></p>
                     <p>image url: <input type="text" onChange={this.EditImageUrl} placeholder="Enter Image Url" required></input><br/></p>
                 </div>
                 <button onClick={this.addPost}>add Post</button><br/>

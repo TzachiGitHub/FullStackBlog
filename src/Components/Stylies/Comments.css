@@ -15,6 +15,7 @@
     border: 1px solid black;
     margin-bottom: 3px;
     padding-left: 3px;
+
 }
 
 
@@ -23,11 +24,7 @@
     padding-right: 100px;
 
 }
-/*.post-image {*/
-/*    position: absolute;*/
-/*    top: 5px;*/
-/*    right: 5px;*/
-/*}*/
+
 
 .post-footer {
     margin: 5px;

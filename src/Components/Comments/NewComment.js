@@ -6,21 +6,24 @@ import '../Stylies/NewPost.css';
 export default class NewComment extends React.Component {
     constructor(props) {
         super(props);
+
         console.log("props from newcomment")
         console.log(this.props)
         this.state = {
-            myPost: this.props.myPost,
+            MyPost: this.props.MyPost,
             title: null,
             content: null,
-            author: this.props.myPost.author,
-            authorId: this.props.myPost.authorId,
-            postId: this.props.match.params.id
+            //author: this.props.username,
+            authorId: this.props.MyPost.authorId,
+            postId:this.props.MyPost.id,
+            username:this.props.username,
+            MyComment:null,
         };
 
-        console.log("this.props from newcomment")
-        console.log(this.props)
-        console.log("this.state from newcomment")
-        console.log(this.state)
+        console.log("this.props.username from newcomment")
+        console.log(this.props.username)
+        console.log("this.props.author from newcomment")
+        console.log(this.props.author)
 
     }
 
@@ -39,38 +42,40 @@ export default class NewComment extends React.Component {
 
 
     addComment = (e) => {
-        const {postId} = this.state
-        console.log("from addComment: this.state ==")
-        console.log(this.state)
-        const localUrl = "http://localhost:5000/comment/" + postId;
-        //const deployUrl = "/comments/";
+        const {postId} =  this.state
+        console.log("postId ==")
+        console.log(postId)
+        const Url = "http://localhost:5000/comment/" + postId;
+        //const Url = "/comment/" + postId;
         const data = {
             title: this.state.title,
             content: this.state.content,
-            author:this.state.author,
+            username:this.state.username,
             authorId: this.state.authorId,
-            postId: postId
+            postId: this.state.postId,
         }
-        axios.post(localUrl, data)
+        axios.post(Url, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
                         data: [res.data],
+                        MyComment: [res.data],
                         resp: "Success: user add comment.",
                     });
-                    this.props.history.push('/')
+                    //this.props.history.push('/')
+                      this.props.history.push('/post/'+ postId )
                 }
             })
             .catch((err) => {
                 this.setState({
                     data: [],
-                    resp: "Error: failed to add post."
+                    resp: "Error: failed to add comment."
                 });
             });
+                // this.props.history.push('/')
     }
 
     render() {
-        console.log("id from newComment" + this.props.id)
         return (
 
             <div>

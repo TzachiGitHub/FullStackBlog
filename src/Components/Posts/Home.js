@@ -9,11 +9,12 @@ export default class Home extends React.Component{
     }
 
     render() {
+        const {onSavePost, isLoggedIn} = this.props
         return (
             <div>
                 <div className="home-main">
                     <div className="home-Section">
-                        <MainSection savePost={this.props.savePost} isLoggedIn={this.props.isLoggedIn}/>
+                        <MainSection onSavePost={onSavePost} isLoggedIn={isLoggedIn}/>
                     </div>
                     <div className="home-sidebar">
                         <Sidebar/>
