@@ -1,106 +1,138 @@
 import React from 'react';
 import {BrowserRouter as Router, Switch,Link, Route, Redirect} from 'react-router-dom';
-import './Stylies/App.css';
-import Header from './Components/Header';
-import AboutMe from './hw4/AboutMe';
-import Home from './hw4/Home';
-import Login from './hw6/login';
-import NewPost from './hw4/NewPost';
-import SinglePost from './hw4/singlePost';
-import Signup from "./hw6/signup";
+import Cookie from "js-cookie";
+ import './Components/Stylies/App.css';
+import Header from './Components/Posts/Header';
+import AboutMe from './Components/AboutMe';
+import Home from './Components/Posts/Home';
+import Login from './Components/Rejistration/Login';
+import NewPost from './Components/Posts/NewPost';
+import SinglePost from './Components/Posts/SinglePost';
+import Signup from "./Components/Rejistration/Signup";
 import axios from 'axios';
-import Edit from './hw4/Edit';
-import Comments from "./Components/Comments";
-import NewComment from "./hw4/NewComment";
-import SingleComment from "./Components/SingleComment";
-import Delete from "./Components/Delete";
+import NewComment from "./Components/Comments/NewComment";
+import DeletePost from "./Components/Posts/DeletePost";
+import DeleteComment from "./Components/Comments/DeleteComment";
+import EditPost from "./Components/Posts/EditPost";
+import Search from "./Components/Posts/Search";
+import SearchTags from "./Components/Posts/SearchTags";
+import EditComment from "./Components/Comments/EditComment";
 
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoggedIn: false,
-            userId: null,
-            mypost: null,
-            myComment: null,
-            isEmpty:true
+            isLoggedIn:  (Cookie.get("userId") == null )? false : true,
+            MyPost: null,
+            MyComment: null,
+            userId: Cookie.get("userId" )|| null,
+            username:Cookie.get("username" )|| null,
+            useremail:null,
+            forsearch: null,
+            respfromSearch: [],
+            myTags:null,
+
+
         };
         this.onLogout = this.onLogout.bind(this);
     }
 
+    changeLoggedIn = (props) => {
+        this.setState({
+            isLoggedIn: props.isLoggedIn,
+            userId: props.userId,
+            username:props.username,
+            useremail:props.useremail,
 
+        });
+        Cookie.set("userId", this.state.userId)
+        Cookie.set("username", this.state.username)
+    }
 
     onSavePost = (post) => {
         this.setState({
-            mypost: post
+            MyPost: post
         });
-        console.log("saved post!:")
-        console.log(post)
+    }
+    onSaveTags = (tags) => {
+        this.setState({
+             myTags:tags
+        })
     }
 
     onSaveComment = (comment) => {
         this.setState({
-            myComment: comment
+            MyComment: comment
         });
-        console.log("myComment from app")
-        console.log(this.state.myComment)
     }
 
 
+    onLogout = (props) => {
+            const Url = "http://localhost:5000/logout"
+            //const Url = "/logout"
+           const data = {
+                userId: this.state.userId
+           }
 
-onLogout = (props) => {
-        const localUrl = "http://localhost:5000/logout/" + this.state.userId;
-        //const deployUrl = "/logout/" + this.state.userId;
+            axios.post(Url,data)
+                .then((res) => {
+                    if (res.status === 200) {
+                        this.setState({
+                            isLoggedIn: false,
+                            userId: null
+                        });
+                        Cookie.remove("userId", this.state.userId)
+                        Cookie.remove("username", this.state.username)
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        };
 
-        axios.post(localUrl)
-            .then((res) => {
-                if (res.status === 200) {
-                    this.setState({
-                        isLoggedIn: false,
-                        userId: null
-                    });
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    };
 
-    changeLoggedIn = (props) => {
-        this.setState({
-            isLoggedIn: props.onLogin,
-            userId: props.userId
-        });
-        console.log(props)
-    }
 
 
     render() {
-        var {mypost, isLoggedIn, userId, myComment} = this.state
-        console.log("isLoggedIn from app " + this.state.isLoggedIn)
+        const {MyPost,MyComment,myTags,resp, isLoggedIn, userId, username,forsearch,allPosts,respfromSearch,handleChange} = this.state
+        // console.log("this.respfromSearch ==" + respfromSearch)
+        // console.log("this.forsearch ==" + forsearch)
         return (
             <div className = "app-header">
-                <Router>
+                 <Router>
+                     <Header username={username} onLogout={this.onLogout} isLoggedIn={isLoggedIn}/>
+                     <Switch>
+                         <Route path="/aboutme" component={AboutMe}/>
+                         <Route path="/login" component={(props)=> <Login {...props} resp={resp} onLogin={this.changeLoggedIn}/>}/>
+                         <Route path="/newpost" component={(props) => isLoggedIn ? <NewPost {...props} username={username} userId={userId}/> : <Redirect to="/login"/>}/>
+                         <Route exact path="/post/:id" component={(props)=> <SinglePost username={username} MyPost={MyPost} isLoggedIn={isLoggedIn} {...props} userId={userId} onSaveComment={this.onSaveComment} MyComment={MyComment}/>}/>
+                         <Route exact path="/signup" component={(props)=> <Signup {...props} onLogin={this.changeLoggedIn}/>}/>
+                         <Route path="/logout" component={this.onLogout}/>
+                         <Route path="/editpost" component={(props) => <EditPost {...props} userId={userId} MyPost={MyPost}/>}/>
+                         <Route path="/editcomment" component={(props) => <EditComment {...props} userId={userId} MyPost={MyPost} MyComment={MyComment}/>}/>
+                         <Route path="/newcomment" component={(props) => <NewComment {...props} userId={userId} username={username} MyPost={MyPost}/>}/>
+                         <Route path="/deletepost" component={(props) => <DeletePost {...props} userId={userId} MyPost={MyPost}/>}/>
+                         <Route path="/deletecomment" component={(props) => <DeleteComment {...props} userId={userId} MyComment={MyComment}/>}/>
+                         <Route path="/search/:word" component={(props) => <Search {...props} isLoggedIn={isLoggedIn} MyPost={MyPost} onSavePost={this.onSavePost} onSaveTags={this.onSaveTags}/>}/>
+                         <Route path="/searchtags/:word" component={(props) => <SearchTags {...props} onSaveTags={this.onSaveTags}isLoggedIn={isLoggedIn} MyPost={MyPost} myTags={myTags}onSavePost={this.onSavePost}/>}/>
+                         <Route exact path="/" component={(props)=>
+                             <Home
+                                 myTags={myTags}
+                                 onSaveTags={this.onSaveTags}
+                                 onSavePost={this.onSavePost}
+                                 isLoggedIn={isLoggedIn}
+                             />}
+                        />
+                     </Switch>
+                 </Router>
+             </div>
 
-                    <Header  onLogout={this.onLogout} isLoggedIn={isLoggedIn}/>
-                    <Switch>
-                        <Route path="/AboutMe" component={AboutMe}/>
-                        <Route path="/login" component={(props)=> <Login {...props} onLogin={this.changeLoggedIn}/>}/>
-                        <Route path="/newPost" component={(props) => isLoggedIn ? <NewPost {...props} userId={userId}/> : <Redirect to="/login"/>}/>
-                        <Route exact path="/post/:id" component={(props)=> <SinglePost isLoggedIn={isLoggedIn} {...props} userId={userId} saveComment={this.onSaveComment}/>}/>
-                        <Route exact path="/signup" component={(props)=> <Signup {...props} onLogin={this.changeLoggedIn}/>}/>
-                        <Route path="/logout" component={this.onLogout}/>
-                        <Route path="/edit" component={(props) => <Edit {...props} userId={userId} myPost={mypost}/>}/>
-                        <Route path="/newComment/:id" component={(props) => <NewComment {...props} myPost={mypost}/>}/>
-                        <Route path="/delete" component={(props) => <Delete {...props} myPost={mypost}/>}/>
-                        <Route exact path="/" component={(props)=> <Home savePost={this.onSavePost} isLoggedIn={isLoggedIn}/>}/>
-                    </Switch>
-                </Router>
-            </div>
-        );
+         );
 
-    }
-}
+     }
+ }
 
 export default App;
+
+

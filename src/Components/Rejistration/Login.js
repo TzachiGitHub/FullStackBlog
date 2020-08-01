@@ -8,6 +8,7 @@ export default class Login extends React.Component {
         this.state = {
             username: null,
             password: null,
+            useremail:null,
             // this.changeUsername = this.changeUsername.bind(this);
             // this.changePassword = this.changePassword.bind(this);
             // this.doLogin = this.doLogin.bind(this);
@@ -42,7 +43,7 @@ export default class Login extends React.Component {
             .then((res) => {
                 console.log("res from login")
                 console.log(res)
-                this.props.onLogin({isLoggedIn: true, userId: res.data.userId ,username:this.state.username})
+                this.props.onLogin({isLoggedIn: true, userId: res.data.userId ,username:this.state.username,useremail:this.state.useremail})
                 if (res.status === 200) {
                     this.setState({
                         username: this.state.username,

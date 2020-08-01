@@ -14,6 +14,7 @@ export default class NewComment extends React.Component {
             title: null,
             content: null,
             //author: this.props.username,
+            published:null,
             authorId: this.props.MyPost.authorId,
             postId:this.props.MyPost.id,
             username:this.props.username,
@@ -53,6 +54,7 @@ export default class NewComment extends React.Component {
             username:this.state.username,
             authorId: this.state.authorId,
             postId: this.state.postId,
+            published: new Date().toLocaleString(),
         }
         axios.post(Url, data)
             .then((res) => {

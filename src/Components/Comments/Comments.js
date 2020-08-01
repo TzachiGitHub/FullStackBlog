@@ -16,12 +16,12 @@ export default class Comments extends Component{
             postId :this.props.postId,
             onSaveComment:this.props.onSaveComment,
         };
-        console.log("username from comments" + this.state.username)
+        // console.log("username from comments" + this.state.username)
 
     }
 
     componentDidMount () {
-        const {postId} =this.state
+        const {postId} = this.state
         const Url = "http://localhost:5000/comment/" + postId
         //const Url = "/comment/" + post_id
 
@@ -40,7 +40,8 @@ export default class Comments extends Component{
                     data:[],
                     resp:false,
                 });
-                alert("no comments yet")
+                console.log(err)
+               // alert("no comments yet")
             });
     }
 
@@ -53,11 +54,12 @@ export default class Comments extends Component{
                 <div>
                     {
                         resp &&
-                    data.map((comment =>
+                    data.map(((comment, index) =>
                         <Comment
+                            key={index}
                             onSaveComment={onSaveComment}
                             comment={comment}
-                            MyComment={this.props.MyComment}
+                            MyComment={MyComment}
                             commentId = {comment.id}
                             title = {comment.title}
                             content ={comment.content}
@@ -69,11 +71,8 @@ export default class Comments extends Component{
                             username={username}
                             userId={userId}
                         />))
-
                 }
-
                 </div>)
-
         }else{
             return null
         }

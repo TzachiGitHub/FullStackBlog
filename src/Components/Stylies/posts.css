@@ -9,12 +9,16 @@
 
 .post-title {
     margin: 5px;
+    flex-direction: inherit;
 }
 
 .post {
+    color: black;
     border: 1px solid black;
     margin-bottom: 10px;
     padding-left: 10px;
+
+
 }
 
 .post-image{

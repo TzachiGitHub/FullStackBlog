@@ -1,37 +1,44 @@
 import React from 'react';
 import axios from 'axios';
 import '../Stylies/NewPost.css';
+import {BsStopFill,AiFillDelete,MdDeleteForever} from "react-icons/all";
+import { IconButton } from '@material-ui/core';
 
 
-export default class DeletePost extends React.Component {
+export default class DeleteComment extends React.Component {
     constructor(props) {
+
         super(props);
         this.state = {
-            postId: this.props.MyPost.id,
-            userId: this.props.userId,
+            commentId:this.props.MyComment.id,
+            postId:this.props.MyComment.post_id,
             resp: null
-
         };
+
+
+
+
     }
 
-
-    NoDeletePost = (e) => {
+    NoDeleteComment = (e) => {
         this.props.history.push("/post/" + this.state.postId)
     }
-    DeletePost = (e) => {
-        const Url = "http://localhost:5000/deletepost";
-        //const Url = "/delete/" + postId
+
+
+
+    DeleteComment = (e) => {
+        const {commentId} = this.state
+        //const Url = "/deletecomment" + postId
+        const Url = "http://localhost:5000/deletecomment";
+
         const data = {
-            authorId:this.state.authorId,
-            postId: this.state.postId,
+            commentId:commentId,
         }
         axios.post(Url, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
-                        resp: "Success: succeed to delete post.",
-
-
+                        resp: "Success: succeed to delete comment.",
                     });
                     alert(this.state.resp)
                     this.props.history.push("/")
@@ -39,7 +46,6 @@ export default class DeletePost extends React.Component {
             })
             .catch((err) => {
                 this.setState({
-                    post: [],
                     resp: "Error: failed to delete post."
                 });
             });
@@ -50,8 +56,8 @@ export default class DeletePost extends React.Component {
             return (
                 <div>
                     <h2>The post will be deleted</h2>
-                    <button onClick={this.DeletePost}>Are you sure?</button>
-                    <button onClick={this.NoDeletePost}> No </button>
+                    <IconButton onClick={this.DeleteComment}>  <AiFillDelete /> yes  </IconButton>
+                    <IconButton onClick={this.NoDeleteComment}> <MdDeleteForever/> No </IconButton>
                     <br/>
                 </div>
             );

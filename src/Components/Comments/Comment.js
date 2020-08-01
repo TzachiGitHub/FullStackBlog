@@ -9,24 +9,29 @@ export default class Comment extends React.Component{
 
 
     render() {
-        console.log("this.props.commentId==" + this.props.commentId)
-        const {isLoggedIn,author_id,userId,username,author,commentId} = this.props
+
+        const {isLoggedIn, username,author,authorId,userId,comment,published,title,content} = this.props
         return (
             <div className="comment">
-                <p> Written By: {this.props.author}</p>
-                <h6>Title: {this.props.title}</h6>
-                <h5>Content: {this.props.content}</h5>
-                <h4>published: {this.props.published}</h4>
+                <h4>Title: {title}</h4>
+                <h5>Content: {content}</h5>
+                <h6> Written By: {author}    , published: {published}</h6>
+
 
                 {isLoggedIn && author == username &&
                     <Link
-                    onClick={(props)=> {this.props.onSaveComment(this.props.comment) }}
+                    onClick={(props)=> {this.props.onSaveComment(comment) }}
                     to={(props) => '/deletecomment'}>
                     Delete Comment
-                    </Link>
+                    </Link>}
 
+                {isLoggedIn && author == username &&
+                <Link
+                    onClick={(props)=> {this.props.onSaveComment(comment) }}
+                    to={(props) => '/editcomment'}>
+                    edit Comment
+                </Link>}
 
-                }
             </div>
 
 

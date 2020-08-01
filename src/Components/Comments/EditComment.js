@@ -1,31 +1,25 @@
 import React from 'react';
 import axios from 'axios';
 import '../Stylies/NewPost.css';
-import {IconButton} from "@material-ui/core";
-import {AiFillDelete,AiFillEdit,AiOutlineSend} from "react-icons/all";
 
 
-export default class EditPost extends React.Component {
+export default class EditComment extends React.Component {
     constructor(props) {
         super(props);
-        console.log("this.props.MyPost")
-        console.log(this.props.MyPost)
+        console.log("this.props === ")
+        console.log(this.props)
         this.state = {
             // MyPost: props.MyPost,
-            title: props.MyPost.title,
-            content: props.MyPost.content,
+            id:this.props.MyComment.id,
+            title: props.MyComment.title,
+            content: props.MyComment.content,
             published: props.MyPost.published,
-            author: props.MyPost.author,
-            imageUrl: props.MyPost.imageUrl,
-            authorId: props.MyPost.authorId,
+            author: props.MyComment.author,
+            authorId: props.MyComment.authorId,
             postId: this.props.MyPost.id,
             userId: this.props.userId,
             resp: null
         };
-        console.log("from Edit userId:")
-        console.log(this.state.userId)
-        console.log("from Edit authorId")
-        console.log(this.state.authorId)
 
     }
 
@@ -41,11 +35,6 @@ export default class EditPost extends React.Component {
         });
     }
 
-    EditImageUrl = (e) => {
-        this.setState({
-            imageUrl: e.target.value,
-        });
-    }
 
     EditPublished = (e) => {
         this.setState({
@@ -53,19 +42,20 @@ export default class EditPost extends React.Component {
         });
     }
 
-    SaveEditPost = (e) => {
-        const Url = "http://localhost:5000/editpost";
+    SaveEditComment = (e) => {
+        const Url = "http://localhost:5000/editcomment";
         //const Url = "/edit";
         const data = {
+            id:this.state.id,
             title: this.state.title,
             content: this.state.content,
             published:new Date().toLocaleString(),
             author:this.state.author,
-            imageUrl: this.state.imageUrl,
-            userId: this.state.userId,
-            authorId:this.state.authorId,
+            authorId:this.state.userId,
             postId: this.state.postId,
         }
+        console.log("this data ==================")
+        console.log(data)
 
         axios.post(Url, data)
             .then((res) => {
@@ -77,7 +67,7 @@ export default class EditPost extends React.Component {
                 }
             })
             .catch((err) => {
-                    alert("Error: failed to edit post.")
+                alert("Error: failed to edit comment.")
             });
     }
 
@@ -93,11 +83,8 @@ export default class EditPost extends React.Component {
                                          required/><br/></p>
                         <p> content: <input defaultValue={content}  type="text" onChange={this.EditContent}
                                             required/><br/></p>
-                        <p>imageUrl: <input defaultValue={imageUrl}  type="text" onChange={this.EditImageUrl}
-                                             required/><br/></p>
                     </div>
-                    <IconButton onClick={this.SaveEditPost}>  <AiOutlineSend />   </IconButton>
-                    {/*<button onClick={this.SaveEditPost}>save Post</button>*/}
+                    <button onClick={this.SaveEditComment}>save Comment</button>
                     <br/>
                 </div>
             );

@@ -3,7 +3,7 @@ import "../Stylies/posts.css"
 import axios from 'axios';
 import {Link} from 'react-router-dom'
 
-import Comments from "../Components/Comments";
+import Comments from "../Comments/Comments";
 import "../Stylies/posts.css";
 
 
@@ -18,22 +18,18 @@ export default class SinglePost extends Component {
             isLoggedIn: this.props.isLoggedIn,
             username:this.props.username,
             onSaveComment:this.props.onSaveComment,
-           // MyComment:this.props.MyComment,
-        };
-        // console.log("this.date from singlepost == ")
-        // console.log(this.state.postId)
+            tags:null,
 
-        // console.log(this.date)
+        };
+
 
     }
 
     componentDidMount () {
 
         const {postId} = this.state
-        console.log("postId from singlepost ==" + postId)
-        const {isLoggedIn} = this.state.isLoggedIn
         const Url = "http://localhost:5000/post/" + postId ;
-        //const Url = "/post"
+        //const Url = "/post/" + postId ;
         axios.get(Url,)
             .then((res) => {
                 this.setState({
@@ -51,7 +47,7 @@ export default class SinglePost extends Component {
     }
 
     render() {
-        const {resp,isLoggedIn,userId,postId,username,onSaveComment,MyComment} = this.state
+        const {resp,isLoggedIn,userId,postId,username,onSaveComment,MyComment,tags} = this.state
         if (resp && this.state && this.props.MyPost) {
             const {title, content, published, author, imageUrl, authorId} = this.state.MyPost
             return (
@@ -60,13 +56,15 @@ export default class SinglePost extends Component {
                         <p>{content}</p>
                         <h5>This post has been published in {published}  by {author}</h5>
                         <img src={imageUrl} alt="problem Loading Image..."/>
+                        <p>{tags}</p>
 
 
                     {isLoggedIn && authorId == userId &&
-                    <Link to='/edit'> Edit </Link>}
+                    <Link to='/editpost'> Edit </Link>}
 
 
                     {isLoggedIn && authorId == userId &&
+
                     <Link to='/deletepost'>| Delete </Link>
                     }
 
