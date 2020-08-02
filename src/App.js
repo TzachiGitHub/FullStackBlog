@@ -14,9 +14,11 @@ import NewComment from "./Components/Comments/NewComment";
 import DeletePost from "./Components/Posts/DeletePost";
 import DeleteComment from "./Components/Comments/DeleteComment";
 import EditPost from "./Components/Posts/EditPost";
-import Search from "./Components/Posts/Search";
 import SearchTags from "./Components/Posts/SearchTags";
 import EditComment from "./Components/Comments/EditComment";
+import SearchContent from "./Components/Posts/SearchContent";
+import SearchTitle from "./Components/Posts/SearchTitle";
+
 
 
 class App extends React.Component {
@@ -40,6 +42,7 @@ class App extends React.Component {
 
     changeLoggedIn = (props) => {
         this.setState({
+            useGoogle:props.useGoogle,
             isLoggedIn: props.isLoggedIn,
             userId: props.userId,
             username:props.username,
@@ -49,6 +52,15 @@ class App extends React.Component {
         Cookie.set("userId", this.state.userId)
         Cookie.set("username", this.state.username)
     }
+    // onLoginGoogle = (props) =>{
+    //     this.setState({
+    //         isLoggedIn: props.isLoggedIn,
+    //         userId: props.userId,
+    //         username:props.username,
+    //         useremail:props.useremail,
+    //     })
+    //
+    // }
 
     onSavePost = (post) => {
         this.setState({
@@ -100,6 +112,7 @@ class App extends React.Component {
         // console.log("this.forsearch ==" + forsearch)
         return (
             <div className = "app-header">
+
                  <Router>
                      <Header username={username} onLogout={this.onLogout} isLoggedIn={isLoggedIn}/>
                      <Switch>
@@ -114,7 +127,8 @@ class App extends React.Component {
                          <Route path="/newcomment" component={(props) => <NewComment {...props} userId={userId} username={username} MyPost={MyPost}/>}/>
                          <Route path="/deletepost" component={(props) => <DeletePost {...props} userId={userId} MyPost={MyPost}/>}/>
                          <Route path="/deletecomment" component={(props) => <DeleteComment {...props} userId={userId} MyComment={MyComment}/>}/>
-                         <Route path="/search/:word" component={(props) => <Search {...props} isLoggedIn={isLoggedIn} MyPost={MyPost} onSavePost={this.onSavePost} onSaveTags={this.onSaveTags}/>}/>
+                         <Route path="/contentsearch/:word" component={(props) => <SearchContent {...props} isLoggedIn={isLoggedIn} MyPost={MyPost} onSavePost={this.onSavePost} onSaveTags={this.onSaveTags}/>}/>
+                         <Route path="/titlesearch/:word" component={(props) => <SearchTitle {...props} isLoggedIn={isLoggedIn} MyPost={MyPost} onSavePost={this.onSavePost} onSaveTags={this.onSaveTags}/>}/>
                          <Route path="/searchtags/:word" component={(props) => <SearchTags {...props} onSaveTags={this.onSaveTags}isLoggedIn={isLoggedIn} MyPost={MyPost} myTags={myTags}onSavePost={this.onSavePost}/>}/>
                          <Route exact path="/" component={(props)=>
                              <Home

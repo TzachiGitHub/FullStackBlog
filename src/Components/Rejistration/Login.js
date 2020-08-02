@@ -1,11 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import '../Stylies/App.css';
-//resp dont work
+import LoginGoogle from "./LoginGoogle";
+
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            onLogin:null,
             username: null,
             password: null,
             useremail:null,
@@ -29,6 +31,35 @@ export default class Login extends React.Component {
         });
     }
 
+    doLoginGoogle = (e) => {
+        console.log("eee ==" + e.username)
+
+        const data = {
+            username:e.username,
+            password:e.password,
+            useremail:e.useremail,
+        }
+        const Url = "http://localhost:5000/logingoogle";
+        //const Url = "/login";
+
+        axios.post(Url, data)
+            .then((res) => {
+                this.props.onLogin({isLoggedIn: true, userId: res.data.userId ,username:this.state.username,useremail:this.state.useremail,useGoogle:false})
+                if (res.status === 200) {
+                    this.setState({
+                        username: this.state.username,
+                        password: this.state.password,
+                    });
+                    alert("Success: user logged in.")
+                    this.props.history.push('/')
+                }
+            })
+            .catch((err) => {
+                alert("Error: failed to login user try to signup.")
+            });
+    }
+
+
     doLogin = (e) => {
 
         console.log(this.state.username)
@@ -41,9 +72,9 @@ export default class Login extends React.Component {
 
         axios.post(Url, data)
             .then((res) => {
-                console.log("res from login")
-                console.log(res)
-                this.props.onLogin({isLoggedIn: true, userId: res.data.userId ,username:this.state.username,useremail:this.state.useremail})
+                // console.log("res from login")
+                // console.log(res)
+                this.props.onLogin({isLoggedIn: true, userId: res.data.userId ,username:this.state.username,useremail:this.state.useremail,useGoogle:false})
                 if (res.status === 200) {
                     this.setState({
                         username: this.state.username,
@@ -68,6 +99,9 @@ export default class Login extends React.Component {
                     password: <input type="password" onChange={this.changePassword} placeholder="Enter Password" required ></input><br/>
                     <button onClick={this.doLogin}>send</button><br/>
                     {this.state.resp?this.state.resp:null}
+                </div>
+                <div>
+                    <LoginGoogle doLoginGoogle={this.doLoginGoogle}  />
                 </div>
             </div>
         );

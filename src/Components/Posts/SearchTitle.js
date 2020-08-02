@@ -5,7 +5,7 @@ import Posts from "./Posts";
 import Post from "./Post";
 //import React, {Component} from 'react';
 
-export default class Search extends React.Component {
+export default class SearchTitle extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,7 +21,7 @@ export default class Search extends React.Component {
     }
 
     componentDidMount () {
-        const Url = "http://localhost:5000/search/" + this.state.forSearch
+        const Url = "http://localhost:5000/titlesearch/" + this.state.forSearch
         //const Url = "/search/ +  this.state.forSearch
 
         axios.get(Url)

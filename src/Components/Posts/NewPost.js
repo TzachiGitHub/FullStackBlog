@@ -20,7 +20,8 @@ export default class NewPost extends React.Component {
             published: null,
             author : null,
             imageUrl :null,
-            tags: ['Tags', 'Input'],
+          //  tags: ['Tags', 'Input'],
+            tags:['Enter your tag']
         };
 
     }
@@ -86,13 +87,7 @@ export default class NewPost extends React.Component {
 
 
     }
-    ButtonExampleConditionals = () => (
-        <Button.Group>
-            <Button>Cancel</Button>
-            <Button.Or />
-            <Button positive>Save</Button>
-        </Button.Group>
-    )
+
 
 
 
@@ -126,6 +121,7 @@ export default class NewPost extends React.Component {
                 }
             })
             .catch((err) => {
+                this.props.history.push('/')
                 console.log(err)
             });
     }

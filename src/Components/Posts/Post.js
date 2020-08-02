@@ -7,6 +7,8 @@ import {FiAlertOctagon} from "react-icons/fi";
 import {BsStopFill,AiFillDelete} from "react-icons/all";
 import {colors, IconButton} from '@material-ui/core';
 import green from "@material-ui/core/colors/green";
+import {AiFillEdit,AiFillFileText,AiFillBook} from "react-icons/all";
+
 import axios from "axios";
 import Tag from "./Tag";
 //import Tags from "react-native-tags-input";
@@ -95,18 +97,12 @@ export default class Post extends React.Component{
 
                    </div>
 
-                   <Link
-                       onClick={(props) => {
-                           this.props.onSavePost(this.props.post)
-                       }}
+                   <IconButton>  <Link
+                       onClick={(props) => {this.props.onSavePost(this.props.post)}}
                        to={(props) => `/post/${this.props.id}`}>
-                       post
+                        <AiFillFileText/>
                    </Link>
-                   {/*<ion-icon name="BsStopFil">kll</ion-icon>*/}
-                   {/*<FaReact/>*/}
-                   {/* <BsStopFill/>*/}
-
-                   {/*<IconButton>  <AiFillDelete/>  </IconButton>*/}
+                     </IconButton>
 
                </div>
 

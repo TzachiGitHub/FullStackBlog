@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 
 import Comments from "../Comments/Comments";
 import "../Stylies/posts.css";
+import {IconButton} from "@material-ui/core";
+import {AiFillDelete,AiFillEdit} from "react-icons/all";
 
 
 export default class SinglePost extends Component {
@@ -19,6 +21,7 @@ export default class SinglePost extends Component {
             username:this.props.username,
             onSaveComment:this.props.onSaveComment,
             tags:null,
+
 
         };
 
@@ -60,20 +63,21 @@ export default class SinglePost extends Component {
 
 
                     {isLoggedIn && authorId == userId &&
-                    <Link to='/editpost'> Edit </Link>}
+                    <IconButton   >  <Link to='/editpost'> <AiFillEdit/> </Link>     </IconButton>
+
+                    }
 
 
                     {isLoggedIn && authorId == userId &&
 
-                    <Link to='/deletepost'>| Delete </Link>
+                    <IconButton > <Link to='/deletepost'> <AiFillDelete/> </Link>   </IconButton>
                     }
+
 
                     <Comments  MyComment={MyComment} onSaveComment={onSaveComment} username={username}  isLoggedIn={isLoggedIn} userId={userId} postId={postId}/>
 
                     {isLoggedIn &&
-                    <Link to='/newcomment'>
-                        new comment
-                    </Link>
+                    <IconButton >  <Link to='/newcomment'> <AiFillEdit add comment /> </Link>     </IconButton>
                     }
 
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import '../Stylies/NewPost.css';
+import {IconButton} from "@material-ui/core";
+import {AiFillSave} from "react-icons/all";
 
 
 export default class NewComment extends React.Component {
@@ -86,7 +88,8 @@ export default class NewComment extends React.Component {
                     <p>title: <input type="text" onChange={this.EditTitle} placeholder={"Enter title"} required></input><br/></p>
                     <p> content: <input type="text" onChange={this.EditContent} placeholder="Enter post" required></input><br/></p>
                 </div>
-                <button onClick={this.addComment}>add Comment</button><br/>
+                {/*<button onClick={this.addComment}>add Comment</button><br/>*/}
+                <IconButton onClick={this.addComment}  >  <AiFillSave/>   </IconButton>
             </div>
         );
     }

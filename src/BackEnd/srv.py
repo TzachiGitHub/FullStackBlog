@@ -56,6 +56,8 @@ def alive_check():
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
+    print("data['username']")
+    print(data)
     query = "select id, password from users where name=%s"
     values = (data['username'],)
     cursor = g.db.cursor()
@@ -84,6 +86,65 @@ def login():
     resp = {"userId": record[0]}
     cursor.close()
     return resp
+
+@app.route('/logingoogle', methods=['POST'])
+def login_google():
+    data = request.get_json()
+    print("data['username']")
+    print(data)
+    query = "select id, password from users where user_email=%s"
+    values = (data['useremail'],)
+    cursor = g.db.cursor()
+    cursor.execute(query, values)
+    record = cursor.fetchone()
+    print("record ===")
+    print(record)
+    if not record:
+        cursor.close()
+        abort(401)
+
+    user_id = record[0]
+    hashed_pwd = record[1].encode('utf-8')
+    # if bcrypt.hashpw(data['password'].encode('utf-8'), hashed_pwd) != hashed_pwd:
+    #     cursor.close()
+    #     abort(401)
+
+    session_id = str(uuid.uuid4())
+    query = "insert into sessions (user_id, session_id) values (%s, %s) on duplicate key update session_id=%s"
+    values = (user_id, session_id, session_id)
+    cursor.execute(query, values)
+    g.db.commit()
+    username = data['username']
+    # cookieJs = {"username": username, "userId": user_id}
+    # resp = make_response(cookieJs)
+    resp = make_response()
+    resp.set_cookie("session_id", session_id)
+    resp = {"userId": record[0]}
+    cursor.close()
+    return resp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @app.route('/signup', methods=['POST'])
@@ -309,6 +370,8 @@ def add_comment():
     cursor.execute(query, values)
     g.db.commit()
     records = cursor.lastrowid
+    print("record === ")
+    print(records)
     if not records:
         cursor.close()
         abort(401)
@@ -375,9 +438,27 @@ def delete_comments():
     return "Succeeded to delete comment"
 
 
-@app.route('/search/<wordsearch>', methods=['GET'])
-def get_all_posts_for_search(wordsearch):
+@app.route('/contentsearch/<wordsearch>', methods=['GET'])
+def get_all_posts_for_search_content(wordsearch):
     query = "select * from posts where content like %s"
+    value = ("%" + wordsearch + "%",)
+    cursor = g.db.cursor()
+    cursor.execute(query, value)
+    records = cursor.fetchall()
+    if not records:
+        cursor.close();
+        abort(401)
+
+    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId']
+    data = []
+    for r in records:
+        data.append(dict(zip(header, r)))
+    cursor.close()
+    return json.dumps(data)
+
+@app.route('/titlesearch/<wordsearch>', methods=['GET'])
+def get_all_posts_for_search_title(wordsearch):
+    query = "select * from posts where title like %s"
     value = ("%" + wordsearch + "%",)
     cursor = g.db.cursor()
     cursor.execute(query, value)
