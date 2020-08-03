@@ -93,10 +93,10 @@ export default class NewPost extends React.Component {
 
     addPost = (tags) => {
         console.log("this is the tag", tags)
-        const Url = "http://localhost:5000/newpost";
+        //const Url = "http://localhost:5000/newpost";
         //console.log("the tags ==" + this.state.tags)
        // console.log("e ==" + e)
-        //const Url = "/newpost";
+        const Url = "/newpost";
         const data = {
             userId: this.state.userId,
             title: this.state.title,

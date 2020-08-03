@@ -28,8 +28,8 @@ export default class DeleteComment extends React.Component {
 
     DeleteComment = (e) => {
         const {commentId} = this.state
-        //const Url = "/deletecomment" + postId
-        const Url = "http://localhost:5000/deletecomment";
+        const Url = "/deletecomment"
+        //const Url = "http://localhost:5000/deletecomment";
 
         const data = {
             commentId:commentId,

@@ -19,19 +19,19 @@ export default class DeletePost extends React.Component {
         this.props.history.push("/post/" + this.state.postId)
     }
     DeletePost = (e) => {
-        const Url = "http://localhost:5000/deletepost";
-        //const Url = "/delete/" + postId
+       // const Url = "http://localhost:5000/deletepost";
+        const Url = "/deletepost";
         const data = {
             authorId:this.state.authorId,
             postId: this.state.postId,
         }
+        console.log("this.stare.authorId == " + this.state.authorId)
+        console.log("this.state. postId ==" + this.state.postId)
         axios.post(Url, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
                         resp: "Success: succeed to delete post.",
-
-
                     });
                     alert(this.state.resp)
                     this.props.history.push("/")

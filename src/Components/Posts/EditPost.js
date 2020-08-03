@@ -19,7 +19,7 @@ export default class EditPost extends React.Component {
             imageUrl: props.MyPost.imageUrl,
             authorId: props.MyPost.authorId,
             postId: this.props.MyPost.id,
-            userId: this.props.userId,
+            userId: this.props.MyPost.userId,
             resp: null
         };
         console.log("from Edit userId:")
@@ -54,8 +54,8 @@ export default class EditPost extends React.Component {
     }
 
     SaveEditPost = (e) => {
-        const Url = "http://localhost:5000/editpost";
-        //const Url = "/edit";
+        //const Url = "http://localhost:5000/editpost";
+        const Url = "/editpost";
         const data = {
             title: this.state.title,
             content: this.state.content,
@@ -66,6 +66,8 @@ export default class EditPost extends React.Component {
             authorId:this.state.authorId,
             postId: this.state.postId,
         }
+        console.log("this.state.authorId ==" + this.state.authorId)
+        console.log("this.state.postId == " + this.state.postId)
 
         axios.post(Url, data)
             .then((res) => {

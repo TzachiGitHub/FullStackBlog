@@ -31,8 +31,8 @@ export default class SinglePost extends Component {
     componentDidMount () {
 
         const {postId} = this.state
-        const Url = "http://localhost:5000/post/" + postId ;
-        //const Url = "/post/" + postId ;
+        //const Url = "http://localhost:5000/post/" + postId ;
+        const Url = "/post/" + postId ;
         axios.get(Url,)
             .then((res) => {
                 this.setState({
@@ -63,21 +63,21 @@ export default class SinglePost extends Component {
 
 
                     {isLoggedIn && authorId == userId &&
-                    <IconButton   >  <Link to='/editpost'> <AiFillEdit/> </Link>     </IconButton>
+                    <IconButton   >  <Link to='/editpost'>  <AiFillEdit/> edit post </Link>     </IconButton>
 
                     }
 
 
                     {isLoggedIn && authorId == userId &&
 
-                    <IconButton > <Link to='/deletepost'> <AiFillDelete/> </Link>   </IconButton>
+                    <IconButton > <Link to='/deletepost'> <AiFillDelete/> delete post </Link>   </IconButton>
                     }
 
 
                     <Comments  MyComment={MyComment} onSaveComment={onSaveComment} username={username}  isLoggedIn={isLoggedIn} userId={userId} postId={postId}/>
 
                     {isLoggedIn &&
-                    <IconButton >  <Link to='/newcomment'> <AiFillEdit add comment /> </Link>     </IconButton>
+                    <IconButton >  <Link to='/newcomment'> <AiFillEdit /> add comment </Link>     </IconButton>
                     }
 
 

@@ -57,7 +57,7 @@ export default class Home extends React.Component{
 
                                 <div>
 
-                                    search in contents:
+                                    <p> search in</p>:
                                     <input  type="text" onChange={this.handleChange} placeholder={"Enter word to search in"}/>
                                     <Link to={(props) => `contentsearch/${forsearch}`}>
                                         <button type="button" > contents

@@ -5,33 +5,33 @@ import uuid
 from flask_cors import CORS
 import mysql.connector, mysql.connector.pooling
 
-# pool = mysql.connector.pooling.MySQLConnectionPool(
-#     host="my-rds.cmpq1mavlbmq.us-east-1.rds.amazonaws.com",
-#     user='admin',
-#     passwd='beni2020',
-#     database='beni',
-#     buffered=True,
-#     port=3306,
-#     pool_size=3,
-#     pool_name="pool",
-# )
 pool = mysql.connector.pooling.MySQLConnectionPool(
-    host="localhost",
-    user="root",
-    passwd="Beniandsara2020",
-    database="beni",
-    buffered=True,
-    pool_size=3
-)
+     host="my-rds.cmpq1mavlbmq.us-east-1.rds.amazonaws.com",
+     user='admin',
+     passwd='beni2020',
+     database='beni',
+     buffered=True,
+     port=3306,
+     pool_size=10,
+     pool_name="pool",
+ )
+#pool = mysql.connector.pooling.MySQLConnectionPool(
+#    host="localhost",
+#    user="root",
+#    passwd="Beni2020",
+#    database="beni",
+#    buffered=True,
+#   pool_size=3
+#)
 
 
-app = Flask(__name__)
-CORS(app)
+# app = Flask(__name__)
+#CORS(app)
 
 
-# app = Flask(__name__,
-# static_folder='/home/ubuntu/build',
-# static_url_path='/')
+app = Flask(__name__,
+            static_folder='/home/ubuntu/build',
+            static_url_path='/')
 
 
 @app.before_request
@@ -207,7 +207,7 @@ def get_post(id):
     record = cursor.fetchone()
     if not record:
         cursor.close()
-        abort(401)
+        return []
     header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId']
     cursor.close()
     return json.dumps(dict(zip(header, record)))
@@ -233,19 +233,23 @@ def get_all_posts():
 
 @app.route('/tags/<postId>', methods=['GET'])
 def get_all_tags(postId):
+    print("1")
     query = "select id, name, post_id from tags where post_id=%s"
     value = (postId,)
     cursor = g.db.cursor()
     cursor.execute(query, value)
     records = cursor.fetchall()
+    print("2")
     if not records:
         cursor.close()
-        abort(401)
+        return []
     header = ['id', 'name', 'post_id']
     data = []
+    print("3")
     for r in records:
         data.append(dict(zip(header, r)))
     cursor.close()
+    print("4")
     return json.dumps(data)
 
 
@@ -295,28 +299,29 @@ def get_post(id):
 @app.route('/editpost', methods=['POST'])
 def edit_post():
     data = request.get_json()
-    print("data from editpost ==")
-    print(data)
-    author_query = "select author_id from posts where id=%s"
-    author_value = (data['postId'],)
-    cursor = g.db.cursor()
-    cursor.execute(author_query, author_value)
-    record = cursor.fetchone()
-    if not record:
-        cursor.close()
-        abort(401)
-    print("data['authorId'] ==")
-    print(data['authorId'])
-    print("record[0] ==")
-    print(record[0])
-
-    if data['authorId'] != record[0]:
-        cursor.close()
-        abort(403)
+    # print("data from editpost ==")
+    # print(data)
+    # author_query = "select author_id from posts where id=%s"
+    # author_value = (data['postId'],)
+    # cursor = g.db.cursor()
+    # cursor.execute(author_query, author_value)
+    # record = cursor.fetchone()
+    # if not record:
+    #     cursor.close()
+    #     abort(401)
+    # print("data['authorId'] ==")
+    # print(data['authorId'])
+    # print("record[0] ==")
+    # print(record[0])
+    #
+    # if data['authorId'] != record[0]:
+    #     cursor.close()
+    #     abort(403)
 
     query = "update posts set title=%s, content=%s, published=%s, author=%s, imageurl=%s, author_id=%s where id=%s"
     values = (data['title'], data['content'], data['published'], data['author'], data['imageUrl'], data['authorId'],
               data['postId'])
+    cursor = g.db.cursor()
     cursor.execute(query, values)
     g.db.commit()
     cursor.close()
@@ -394,34 +399,34 @@ def get_comment(id):
 @app.route('/deletepost', methods=['POST'])
 def delete_post_and_comments():
     data = request.get_json()
-    post_id = data['postId']
+    postId = data['postId']
     queryComment = "delete from comments where post_id =%s"
-    value = (post_id,)
+    value = (postId,)
     cursor = g.db.cursor()
     cursor.execute(queryComment, value)
-    if not cursor:
-        cursor.close();
-        abort(401)
+    # if not cursor:
+    #     cursor.close();
+    #     abort(401)
     g.db.commit()
     cursor.close()
 
-    queryTags = "delete from Tags where post_id =%s"
-    value = (post_id,)
+    queryTags = "delete from tags where post_id =%s"
+    value = (postId,)
     cursor = g.db.cursor()
     cursor.execute(queryTags, value)
-    if not cursor:
-        cursor.close();
-        abort(401)
+    # if not cursor:
+    #     cursor.close();
+    #     abort(401)
     g.db.commit()
     cursor.close()
 
     queryPost = "delete from posts where id = %s"
-    value = (post_id,)
+    # value = (postId,)
     cursor = g.db.cursor()
     cursor.execute(queryPost, value)
     g.db.commit()
     cursor.close()
-    return "Succeeded to delete comments for pt_id"
+    return "Succeeded to delete post"
 
 
 

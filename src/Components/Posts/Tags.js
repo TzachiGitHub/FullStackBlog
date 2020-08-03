@@ -20,8 +20,8 @@ export default class Tags extends React.Component {
 
     componentDidMount() {
         this.props.respFromSearch.map(((tag, index) => {
-            const Url = "http://localhost:5000/post/" + tag.id
-            //const Url = "/post/" + tag.id
+            //const Url = "http://localhost:5000/post/" + tag.id
+            const Url = "/post/" + tag.id
             axios.get(Url)
                 .then((res) => {
                     console.log("this is res.data   ")

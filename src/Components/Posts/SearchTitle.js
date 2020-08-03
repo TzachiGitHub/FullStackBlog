@@ -21,8 +21,8 @@ export default class SearchTitle extends React.Component {
     }
 
     componentDidMount () {
-        const Url = "http://localhost:5000/titlesearch/" + this.state.forSearch
-        //const Url = "/search/ +  this.state.forSearch
+        //const Url = "http://localhost:5000/titlesearch/" + this.state.forSearch
+        const Url = "/titlesearch/" +  this.state.forSearch
 
         axios.get(Url)
             .then((res) => {

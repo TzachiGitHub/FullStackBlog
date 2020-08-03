@@ -41,8 +41,8 @@ export default class Post extends React.Component{
 
     componentDidMount() {
         const {postId, fromSearch} = this.state
-        const url = "http://localhost:5000/tags/" + postId;
-        // const Url = "/tags/" + postId
+        //const url = "http://localhost:5000/tags/" + postId;
+         const url = "/tags/" + postId
         axios.get(url)
             .then((res) => {
                 if (res.status === 200) {
@@ -66,11 +66,6 @@ export default class Post extends React.Component{
 
 
    render() {
-
-        console.log("this.tags ==")
-        console.log(this.state.tags)
-
-
        if (this.state && this.state.tags) {
             const {tags,resp,onSaveTags,myTags} = this.state
            return (

@@ -27,8 +27,8 @@ export default class SearchTags extends React.Component {
     componentDidMount() {
 
 
-        const Url = "http://localhost:5000/searchtags/" + this.state.forSearch
-        //const Url = "/searchtags/" + this.state.forSearch
+        //const Url = "http://localhost:5000/searchtags/" + this.state.forSearch
+        const Url = "/searchtags/" + this.state.forSearch
 
         axios.get(Url)
             .then((res) => {

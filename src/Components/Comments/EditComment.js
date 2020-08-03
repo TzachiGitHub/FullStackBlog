@@ -21,6 +21,7 @@ export default class EditComment extends React.Component {
             resp: null
         };
 
+
     }
 
     EditTitle = (e) => {
@@ -43,8 +44,8 @@ export default class EditComment extends React.Component {
     }
 
     SaveEditComment = (e) => {
-        const Url = "http://localhost:5000/editcomment";
-        //const Url = "/edit";
+        //const Url = "http://localhost:5000/editcomment";
+        const Url = "/editcomment";
         const data = {
             id:this.state.id,
             title: this.state.title,

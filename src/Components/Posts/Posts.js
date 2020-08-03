@@ -20,8 +20,8 @@ export default class Posts extends Component{
     }
 
     componentDidMount () {
-        const url = "http://localhost:5000/posts"
-       // const url = "/posts/"
+        //const url = "http://localhost:5000/posts"
+        const url = "/posts"
         axios.get(url)
             .then(res => {
                 if (res.status === 200) {
@@ -39,8 +39,6 @@ export default class Posts extends Component{
                 console.error(err);
             });
     }
-
-
 
 
     render() {

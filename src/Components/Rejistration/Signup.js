@@ -67,8 +67,8 @@ export default class Signup extends React.Component {
     doSignup = (e) => {
         if(this.isEmail(this.state.useremail) || this.state.useGoogle) {
             console.log("this.state.useGoogle==" + this.state.useGoogle)
-            const Url = "http://localhost:5000/signup";
-            //const Url = "/signup";
+            //const Url = "http://localhost:5000/signup";
+            const Url = "/signup";
             const data = {
                 username: this.state.username,
                 password: this.state.password,
@@ -105,9 +105,9 @@ export default class Signup extends React.Component {
                     email: <input type="email" onChange={this. SaveEmail} placeholder = "Enter a valid Email" required></input><br/>
                     <button onClick={this.doSignup}>send</button><br/>
                     </div>
-                    <div>
-                        <LoginGoogle doSignupOrLoginGoogle={this.doSignupOrLoginGoogle} onLogin={onLogin} />
-                    </div>
+                    {/*<div>*/}
+                    {/*    <LoginGoogle doSignupOrLoginGoogle={this.doSignupOrLoginGoogle} onLogin={onLogin} />*/}
+                    {/*</div>*/}
                 </div>
         );
     }

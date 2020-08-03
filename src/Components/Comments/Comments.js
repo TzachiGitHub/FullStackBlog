@@ -22,8 +22,8 @@ export default class Comments extends Component{
 
     componentDidMount () {
         const {postId} = this.state
-        const Url = "http://localhost:5000/comment/" + postId
-        //const Url = "/comment/" + post_id
+        //const Url = "http://localhost:5000/comment/" + postId
+        const Url = "/comment/" + postId
 
         axios.get(Url)
             .then((res) => {

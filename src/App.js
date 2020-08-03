@@ -81,8 +81,8 @@ class App extends React.Component {
 
 
     onLogout = (props) => {
-            const Url = "http://localhost:5000/logout"
-            //const Url = "/logout"
+            //const Url = "http://localhost:5000/logout"
+           const Url = "/logout"
            const data = {
                 userId: this.state.userId
            }

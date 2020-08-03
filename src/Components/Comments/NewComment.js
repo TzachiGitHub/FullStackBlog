@@ -48,8 +48,8 @@ export default class NewComment extends React.Component {
         const {postId} =  this.state
         console.log("postId ==")
         console.log(postId)
-        const Url = "http://localhost:5000/comment/" + postId;
-        //const Url = "/comment/" + postId;
+        //const Url = "http://localhost:5000/comment/" + postId;
+        const Url = "/comment/" + postId;
         const data = {
             title: this.state.title,
             content: this.state.content,

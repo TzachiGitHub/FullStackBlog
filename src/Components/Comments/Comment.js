@@ -1,6 +1,8 @@
 import React from 'react';
 import "../Stylies/Comments.css"
 import {Link} from 'react-router-dom'
+import {IconButton} from "@material-ui/core";
+import {AiFillDelete, AiFillEdit} from "react-icons/all";
 
 export default class Comment extends React.Component{
     constructor(props) {
@@ -19,18 +21,20 @@ export default class Comment extends React.Component{
 
 
                 {isLoggedIn && author == username &&
-                    <Link
-                    onClick={(props)=> {this.props.onSaveComment(comment) }}
-                    to={(props) => '/deletecomment'}>
-                    Delete Comment
-                    </Link>}
+                    // <Link
+                    // onClick={(props)=> {this.props.onSaveComment(comment) }}
+                    // to={(props) => '/deletecomment'}>
+                    // Delete Comment
+                        <IconButton > <Link onClick={(props)=> {this.props.onSaveComment(comment) }}  to={(props) => '/deletecomment'}> <AiFillDelete/> delete comment </Link>   </IconButton>}
+                    {/*</Link>}*/}
 
                 {isLoggedIn && author == username &&
-                <Link
-                    onClick={(props)=> {this.props.onSaveComment(comment) }}
-                    to={(props) => '/editcomment'}>
-                    edit Comment
-                </Link>}
+                // <Link
+                //     onClick={(props)=> {this.props.onSaveComment(comment) }}
+                //     to={(props) => '/editcomment'}>
+                //     edit Comment
+                    <IconButton   >  <Link  onClick={(props)=> {this.props.onSaveComment(comment) }} to={(props) => '/editcomment'}>  <AiFillEdit/> edit comment </Link>     </IconButton>}
+                {/*</Link>}*/}
 
             </div>
 

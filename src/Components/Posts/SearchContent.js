@@ -21,8 +21,8 @@ export default class SearchContent extends React.Component {
     }
 
     componentDidMount () {
-        const Url = "http://localhost:5000/contentsearch/" + this.state.forSearch
-        //const Url = "/search/ +  this.state.forSearch
+        //const Url = "http://localhost:5000/contentsearch/" + this.state.forSearch
+        const Url = "/contentsearch/" +  this.state.forSearch
 
         axios.get(Url)
             .then((res) => {

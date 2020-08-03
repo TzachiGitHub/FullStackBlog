@@ -39,8 +39,8 @@ export default class Login extends React.Component {
             password:e.password,
             useremail:e.useremail,
         }
-        const Url = "http://localhost:5000/logingoogle";
-        //const Url = "/login";
+        //const Url = "http://localhost:5000/logingoogle";
+        const Url = "/logingoogle";
 
         axios.post(Url, data)
             .then((res) => {
@@ -67,8 +67,8 @@ export default class Login extends React.Component {
             username:this.state.username,
             password:this.state.password,
         }
-        const Url = "http://localhost:5000/login";
-        //const Url = "/login";
+       // const Url = "http://localhost:5000/login";
+        const Url = "/login";
 
         axios.post(Url, data)
             .then((res) => {
@@ -100,9 +100,9 @@ export default class Login extends React.Component {
                     <button onClick={this.doLogin}>send</button><br/>
                     {this.state.resp?this.state.resp:null}
                 </div>
-                <div>
-                    <LoginGoogle doLoginGoogle={this.doLoginGoogle}  />
-                </div>
+                {/*<div>*/}
+                {/*    <LoginGoogle doLoginGoogle={this.doLoginGoogle}  />*/}
+                {/*</div>*/}
             </div>
         );
     }
