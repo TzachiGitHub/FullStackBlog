@@ -3,6 +3,7 @@ import "../Stylies/Comments.css"
 import {Link} from 'react-router-dom'
 import axios from "axios";
 import Post from "./Post";
+// import UrlTags from "../Rejistration/Urls"
 
 export default class Tags extends React.Component {
     constructor(props) {
@@ -20,25 +21,21 @@ export default class Tags extends React.Component {
 
     componentDidMount() {
         this.props.respFromSearch.map(((tag, index) => {
-            //const Url = "http://localhost:5000/post/" + tag.id
-            const Url = "/post/" + tag.id
+           const Url = "http://localhost:5000/post/" + tag.id
             axios.get(Url)
                 .then((res) => {
-                    console.log("this is res.data   ")
-                    console.log(res.data)
+
                     if (res.status === 200) {
                         this.setState({
                             postsFromSearch: this.state.postsFromSearch.concat( res.data),
                             resp: true,
                         });
                     }
-                    //console.log("PostsFromSearch==")
-                   // console.log(this.state.PostsFromSearch)
 
                 })
                 .catch((err) => {
-                    console.log(err)
-                    alert("No match2")
+                    // console.log(err)
+                    // alert("No match")
                 });
         }))
 
@@ -66,6 +63,8 @@ export default class Tags extends React.Component {
                             imageUrl={post.imageUrl}
                             id={post.id}
                             // isLoggedIn={isLoggedIn}
+
+                            watchs={post.watchs}
                         />))
                     }
                 </div>);

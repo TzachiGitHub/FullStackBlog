@@ -2,60 +2,374 @@ import React from "react";
 import "../Stylies/Header.css";
 import {Link} from "react-router-dom";
 import {Label} from "semantic-ui-react";
-class Header extends React.Component {
+import { Image, Reveal } from 'semantic-ui-react'
+export default class Header extends React.Component {
+
+
+
     constructor(props) {
         super(props);
+        const {isLoggedIn,username,onLogout} = this.props
         this.state = {
-            isLoggedIn: props.isLoggedIn
+            isLoggedIn:isLoggedIn,
+            username:username,
+            onLogout:onLogout,
         };
     }
 
- render() {
-     return (
-         <header>
-             <div className="header-links">
+    render() {
+        const {isLoggedIn,username,onLogout} = this.props
+        return (
+            <header>
+                <div className="header-links">
 
 
-                 <div>
-                     <span className="header-link"> </span>
-                     <Link to="/" params={{ allPosts: true }}> Home </Link>
-                     <span className="header-link"> | </span>
-                     <Link to="/aboutme"> About Me </Link>
-                     <span className="header-link"> | </span>
-                     <Link to="/newpost"> New Post </Link>
-                 </div>
+                    <div>
+                        <span className="header-link"> </span>
+                        <Link to="/" params={{ allPosts: true }}> Home </Link>
+                        <span className="header-link"> | </span>
+                        <Link to="/aboutme"> About Me </Link>
+                        <span className="header-link"> | </span>
+                        <Link to="/newpost"> New Post </Link>
+                    </div>
 
 
-                 {!this.props.isLoggedIn &&
+                    {!isLoggedIn &&
                     <div>
                         <Link to="/signup">signup</Link>
-                         <span>  |  </span>
-                         <Link to="/login">Login </Link>
+                        <span>  |  </span>
+                        <Link to="/login">Login </Link>
                     </div>
-                 }
+                    }
 
-                 {this.props.isLoggedIn &&
-                    <Link to="/" onClick={this.props.onLogout} >logout </Link>
+                    {isLoggedIn &&
+                    <div>
+                        <Link to="/" onClick={onLogout} >logout </Link>
+                    </div>
+                    }
 
-                 }
+                    {isLoggedIn &&
+                     <div>
 
-                 {this.props.isLoggedIn &&
 
-                 <div>
+                        <Label image>
+                            hello {username}  <img src='https://react.semantic-ui.com/images/avatar/small/elliot.jpg'/>
+                        </Label>
 
-                     <Label image>
-                         hello {this.props.username}  <img src='https://react.semantic-ui.com/images/avatar/small/elliot.jpg'/>
-                     </Label>
-                 </div>
-                 }
-             </div>
-         </header>
-     );
- }
+                    </div>
+
+                    }
+
+                </div>
+            </header>
+        );
+    }
+
+
 
 
 }
-export default Header;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

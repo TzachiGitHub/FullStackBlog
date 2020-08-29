@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import "./Components/Stylies/index.css"
+// import 'semantic-ui-css/semantic.min.css'
 import GoogleLogin from "./Components/Rejistration/LoginGoogle";
 const responseGoogle = (response) => {
     console.log(response);

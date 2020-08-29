@@ -1,12 +1,12 @@
-import React from 'react';
+//YES
+import React, {Component} from 'react';
 
-
-function AboutMe()  {
-    return (
-        <div>
-            <h2>AboutMe</h2>
-        </div>
-    );
+export default class AboutMe extends Component  {
+    render() {
+        return (
+            <div>
+                <h2>AboutMe</h2>
+            </div>
+        );
+    }
 }
-
-export default AboutMe;

@@ -1,33 +1,30 @@
+//no
 import React from 'react';
 import axios from 'axios';
 import '../Stylies/NewPost.css';
 import {IconButton} from "@material-ui/core";
-import {AiFillSave} from "react-icons/all";
+import {AiFillSave, BiArrowBack} from "react-icons/all";
+
 
 
 export default class NewComment extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log("props from newcomment")
-        console.log(this.props)
         this.state = {
-            MyPost: this.props.MyPost,
             title: null,
             content: null,
-            //author: this.props.username,
             published:null,
-            authorId: this.props.MyPost.authorId,
+            MyComment:null,
+            MyPost: this.props.MyPost,
             postId:this.props.MyPost.id,
             username:this.props.username,
-            MyComment:null,
+            authorId: this.props.MyPost.authorId,
+
         };
-
-        console.log("this.props.username from newcomment")
-        console.log(this.props.username)
-        console.log("this.props.author from newcomment")
-        console.log(this.props.author)
-
+    }
+    back = (e) => {
+        this.props.history.push("/post/" + this.state.postId)
     }
 
 
@@ -45,17 +42,16 @@ export default class NewComment extends React.Component {
 
 
     addComment = (e) => {
-        const {postId} =  this.state
-        console.log("postId ==")
-        console.log(postId)
-        //const Url = "http://localhost:5000/comment/" + postId;
-        const Url = "/comment/" + postId;
+        const {title,content,username,authorId,postId} = this.state
+        const Url = "http://localhost:5000/comment/" + postId;
+       // const Url = "/comment/" + postId;
+
         const data = {
-            title: this.state.title,
-            content: this.state.content,
-            username:this.state.username,
-            authorId: this.state.authorId,
-            postId: this.state.postId,
+            title:title,
+            content:content,
+            username:username,
+            authorId:authorId,
+            postId: postId,
             published: new Date().toLocaleString(),
         }
         axios.post(Url, data)
@@ -66,7 +62,6 @@ export default class NewComment extends React.Component {
                         MyComment: [res.data],
                         resp: "Success: user add comment.",
                     });
-                    //this.props.history.push('/')
                       this.props.history.push('/post/'+ postId )
                 }
             })
@@ -76,7 +71,7 @@ export default class NewComment extends React.Component {
                     resp: "Error: failed to add comment."
                 });
             });
-                // this.props.history.push('/')
+
     }
 
     render() {
@@ -88,8 +83,10 @@ export default class NewComment extends React.Component {
                     <p>title: <input type="text" onChange={this.EditTitle} placeholder={"Enter title"} required></input><br/></p>
                     <p> content: <input type="text" onChange={this.EditContent} placeholder="Enter post" required></input><br/></p>
                 </div>
-                {/*<button onClick={this.addComment}>add Comment</button><br/>*/}
+                <IconButton onClick={this.back} >  <BiArrowBack/>  </IconButton>
                 <IconButton onClick={this.addComment}  >  <AiFillSave/>   </IconButton>
+
+
             </div>
         );
     }

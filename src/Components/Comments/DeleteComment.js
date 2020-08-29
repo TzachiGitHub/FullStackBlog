@@ -1,8 +1,10 @@
+//yes
 import React from 'react';
 import axios from 'axios';
 import '../Stylies/NewPost.css';
-import {BsStopFill,AiFillDelete,MdDeleteForever} from "react-icons/all";
+import {AiFillDelete,MdDeleteForever} from "react-icons/all";
 import { IconButton } from '@material-ui/core';
+
 
 
 export default class DeleteComment extends React.Component {
@@ -27,26 +29,27 @@ export default class DeleteComment extends React.Component {
 
 
     DeleteComment = (e) => {
-        const {commentId} = this.state
-        const Url = "/deletecomment"
-        //const Url = "http://localhost:5000/deletecomment";
+        const {commentId,resp,postId} = this.state
+        const Url = "http://localhost:5000/deletecomment";
+        // const Url = "/deletecomment"
 
         const data = {
+            postId:postId,
             commentId:commentId,
         }
         axios.post(Url, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
-                        resp: "Success: succeed to delete comment.",
+                        resp: "Succeed to delete comment.",
                     });
-                    alert(this.state.resp)
+                    alert(resp)
                     this.props.history.push("/")
                 }
             })
             .catch((err) => {
                 this.setState({
-                    resp: "Error: failed to delete post."
+                    resp: "Error: failed to delete comment."
                 });
             });
     }

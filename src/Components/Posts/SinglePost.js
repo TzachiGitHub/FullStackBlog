@@ -6,86 +6,160 @@ import {Link} from 'react-router-dom'
 import Comments from "../Comments/Comments";
 import "../Stylies/posts.css";
 import {IconButton} from "@material-ui/core";
-import {AiFillDelete,AiFillEdit} from "react-icons/all";
+import {
+    AiFillDelete,
+    AiFillEdit,
+    BiArrowBack,
+    AiOutlineAppstoreAdd,
+    AiOutlineComment,
+    AiFillFileText
+} from "react-icons/all";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+
+
+
+
 
 
 export default class SinglePost extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            resp: false,
-            MyPost: this.props.MyPost,
-            userId: this.props.userId,
-            postId: this.props.match.params.id,
-            isLoggedIn: this.props.isLoggedIn,
-            username:this.props.username,
-            onSaveComment:this.props.onSaveComment,
-            tags:null,
+        console.log("this.stat = " + JSON.stringify(this.props))
+        const {forpopularpost,postId,username,respFromSearch,onSaveComment,isLoggedIn,onSaveTags,MyPost,userId} = this.props
+        // if(!forpopularpost){
+            this.state = {
+                tags:null,
+                watchs:null,
+                resp: false,
+                MyPost:MyPost ,
+                userId:userId ,
+                username:username,
+                MyTags:this.props.MyTags,
+                isLoggedIn: isLoggedIn ,
+                onSaveTags:onSaveTags,
+                onSaveComment:onSaveComment,
+                postId:(forpopularpost)? postId : this.props.match.params.id,
 
-
-        };
-
+            };
+        // console.log("username ==" + this.props.history.params.MyTags.author)
+        // console.log("username ==" + this.props.MyPost.author)
 
     }
 
-    componentDidMount () {
+    back = (e) => {
+         this.props.history.push("/" )
+    }
 
-        const {postId} = this.state
-        //const Url = "http://localhost:5000/post/" + postId ;
-        const Url = "/post/" + postId ;
-        axios.get(Url,)
-            .then((res) => {
-                this.setState({
-                    MyPost: res.data,
-                    resp: true,
-                    savePost: this.props.savePost,
-                    onSaveComment:this.props.onSaveComment
-                });
-            })
-            .catch((err) => {
-                this.setState({
-                    resp: false,
-                });
-            });
+
+
+
+
+    componentDidMount () {
+        const {postId,isLoggedIn,MyPost,userId,username} = this.state
+        console.log(isLoggedIn)
+        console.log(userId)
+        console.log(this.props.username)
+            if (MyPost && isLoggedIn && this.props.MyPost.authorId != userId) {
+                const Url = "http://localhost:5000/post/" + postId;
+
+
+                axios.post(Url)
+                    .then((res) => {
+                        if (res.status === 200) {
+
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    });
+            }
+            if(isLoggedIn){
+                const Url = "http://localhost:5000/addtowatchs/" + postId;
+                const data = {
+                    username:username,
+                    one:1,
+                    postId:postId,
+
+                }
+                axios.post(Url,data)
+                    .then((res) => {
+                        if (res.status === 200) {
+
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+
+            }
+
+
+
     }
 
     render() {
-        const {resp,isLoggedIn,userId,postId,username,onSaveComment,MyComment,tags} = this.state
-        if (resp && this.state && this.props.MyPost) {
-            const {title, content, published, author, imageUrl, authorId} = this.state.MyPost
+
+
+        const {resp,isLoggedIn,userId,postId,username,onSaveComment,MyComment,MyTags,MyPost,onSaveTags} = this.state
+        if ( this.state && MyPost) {
+            const {title, content, published, author, imageUrl, authorId, watchs} = this.state.MyPost
+
             return (
                 <div className={"post"}>
                         <h2>{title}</h2>
                         <p>{content}</p>
                         <h5>This post has been published in {published}  by {author}</h5>
                         <img src={imageUrl} alt="problem Loading Image..."/>
-                        <p>{tags}</p>
+                        <h5> <VisibilityIcon />{watchs}</h5>
+
+
+                    {MyTags && MyTags.map(((tag, index) =>
+
+                        <th key={`${tag.name}${index}`}>
+                            <div>
+
+                                <Link
+                                    onClick={(props)=> {onSaveTags(tag) }}
+                                    to={(props) => `/searchtags/${tag.name}`}>
+                                    <button type="button"> # {tag.name}
+                                    </button>
+                                </Link>
+                            </div>
+                        </th>))
+                    }
 
 
                     {isLoggedIn && authorId == userId &&
-                    <IconButton   >  <Link to='/editpost'>  <AiFillEdit/> edit post </Link>     </IconButton>
-
+                         <IconButton >  <Link to='/editpost'>  <AiFillEdit/> edit  </Link>     </IconButton>
                     }
 
 
                     {isLoggedIn && authorId == userId &&
 
-                    <IconButton > <Link to='/deletepost'> <AiFillDelete/> delete post </Link>   </IconButton>
+                    <IconButton > <Link to='/deletepost'> <AiFillDelete/> delete </Link>   </IconButton>
                     }
 
+                    <div className={"comment"}>
+                        <Comments  MyComment={MyComment} onSaveComment={onSaveComment} username={username}  isLoggedIn={isLoggedIn} userId={userId} postId={postId}/>
+                    </div>
 
-                    <Comments  MyComment={MyComment} onSaveComment={onSaveComment} username={username}  isLoggedIn={isLoggedIn} userId={userId} postId={postId}/>
-
+                    <IconButton onClick={this.back} >   <BiArrowBack/>   </IconButton>
                     {isLoggedIn &&
-                    <IconButton >  <Link to='/newcomment'> <AiFillEdit /> add comment </Link>     </IconButton>
+                    <IconButton >  <Link to='/newcomment'> <AiFillEdit/> comment  </Link>     </IconButton>
+                        // <AiFillFileText/>
                     }
+
 
 
                 </div>
 
             );
         }else{
-            return <div> Loading..</div>
+            return (
+                <div> Loading...</div>
+
+            )
+
         }
     }
 }

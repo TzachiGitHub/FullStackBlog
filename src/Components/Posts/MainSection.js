@@ -1,8 +1,6 @@
-import React, {useState} from 'react';
-import DatePicker from "react-datepicker";
-
+import React from 'react';
 import Posts from './Posts'
-import {Label} from "semantic-ui-react";
+
 
 
 
@@ -13,7 +11,6 @@ export default class MainSection extends React.Component{
 
 
     render() {
-        var timeInMs = Date.now();
         const {onSavePost,isLoggedIn,respfromSearch,onSaveTags,myTags} = this.props
 
         return (

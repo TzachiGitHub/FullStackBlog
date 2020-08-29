@@ -1,34 +1,46 @@
-import React, {Component} from 'react';
+import "../Stylies/posts.css"
 import axios from 'axios';
 import Post from "./Post";
-// import "../Stylies/posts.css";
+import React, {Component} from 'react';
+import Popup from "./Popup";
 
 export default class Posts extends Component{
     constructor(props) {
         super(props);
+        const {onSavePost,isLoggedIn,onSaveTags,myTags} =this.props
         this.state = {
             data: [],
-            resp: false,
-            onSavePost: this.props.onSavePost,
-            isLoggedIn: this.props.isLoggedIn,
-            onSaveTags:this.props.onSaveTags,
-            myTags:this.props.myTags,
             tags:null,
+            comments:0,
+            resp: false,
+            forhome:false,
+            myTags:myTags,
+            onSavePost:onSavePost,
+            isLoggedIn:isLoggedIn,
+            onSaveTags:onSaveTags,
+
+
+
+
+
         };
-        // console.log("this allPosts == " + this.props.allPosts)
-        // console.log("this datafromserch == " + this.props.respfromSearch)
     }
 
+
+
     componentDidMount () {
-        //const url = "http://localhost:5000/posts"
-        const url = "/posts"
-        axios.get(url)
+       const Url = "http://localhost:5000/posts"
+        //const Url = "/posts"
+        axios.get(Url)
             .then(res => {
                 if (res.status === 200) {
                     this.setState({
-                        data: res.data,
+                        data: (res.data).reverse(),
+                        forhome:true,
                         resp: true,
                     })
+
+
                 }
             })
             .catch(err => {
@@ -42,10 +54,9 @@ export default class Posts extends Component{
 
 
     render() {
-        const {onSavePost,onSaveTags ,data, resp, isLoggedIn,tags,myTags} = this.state;
+        const {onSavePost,onSaveTags ,data, resp, isLoggedIn,tags,myTags,forhome} = this.state;
         if (this.state && resp) {
             return (
-                <div>
                     <div>
                         {data.map(((post, index) =>
                             <Post
@@ -53,6 +64,7 @@ export default class Posts extends Component{
                                 key={index}
                                 onSavePost={onSavePost}
                                 post={post}
+                                forhome={forhome}
                                 myPost={this.props.MyPost}
                                 title={post.title}
                                 content={post.content}
@@ -63,10 +75,19 @@ export default class Posts extends Component{
                                 isLoggedIn={isLoggedIn}
                                 tags={tags}
                                 myTags={myTags}
+                                watchs={post.watchs}
+                                comments={post.comments}
                             />))
                         }
+
+
+
+
+
+
+
                     </div>
-                </div>)
+                )
         }else {
             return null
         }

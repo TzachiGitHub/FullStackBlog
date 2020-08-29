@@ -1,15 +1,16 @@
+//no
 import React from 'react';
 import axios from 'axios';
 import '../Stylies/NewPost.css';
+import {IconButton} from "@material-ui/core";
+import {BiArrowBack} from "react-icons/all";
+
 
 
 export default class EditComment extends React.Component {
     constructor(props) {
         super(props);
-        console.log("this.props === ")
-        console.log(this.props)
         this.state = {
-            // MyPost: props.MyPost,
             id:this.props.MyComment.id,
             title: props.MyComment.title,
             content: props.MyComment.content,
@@ -22,6 +23,9 @@ export default class EditComment extends React.Component {
         };
 
 
+    }
+    back = (e) => {
+        this.props.history.push("/post/" + this.state.postId)
     }
 
     EditTitle = (e) => {
@@ -37,26 +41,21 @@ export default class EditComment extends React.Component {
     }
 
 
-    EditPublished = (e) => {
-        this.setState({
-            published: e.target.value,
-        });
-    }
+
 
     SaveEditComment = (e) => {
-        //const Url = "http://localhost:5000/editcomment";
-        const Url = "/editcomment";
+        const {id,title,content,author,userId,postId} = this.state
+        const Url = "http://localhost:5000/editcomment";
+        //const Url = "/editcomment";
         const data = {
-            id:this.state.id,
-            title: this.state.title,
-            content: this.state.content,
+            id:id,
+            title:title,
+            content:content,
             published:new Date().toLocaleString(),
-            author:this.state.author,
-            authorId:this.state.userId,
-            postId: this.state.postId,
+            author:author,
+            authorId:userId,
+            postId:postId,
         }
-        console.log("this data ==================")
-        console.log(data)
 
         axios.post(Url, data)
             .then((res) => {
@@ -64,7 +63,8 @@ export default class EditComment extends React.Component {
                     this.setState({
                         post: [res.data],
                     });
-                    this.props.history.push("/")
+                    // this.props.history.push("/")
+                    this.props.history.push("/post/" + this.state.postId)
                 }
             })
             .catch((err) => {
@@ -74,19 +74,18 @@ export default class EditComment extends React.Component {
 
     render() {
         if(this.state) {
-            const {title,content,published,imageUrl} = this.state
+            const {title,content} = this.state
             return (
                 <div>
                     <h2>Edit your Post</h2>
                     <div>
                         {console.log(this.props)}
-                        <p>title: <input defaultValue={title} type="text" onChange={this.EditTitle}
-                                         required/><br/></p>
-                        <p> content: <input defaultValue={content}  type="text" onChange={this.EditContent}
-                                            required/><br/></p>
+                        <p>title: <input defaultValue={title} type="text" onChange={this.EditTitle} required/><br/></p>
+                        <p> content: <input defaultValue={content}  type="text" onChange={this.EditContent} required/><br/></p>
                     </div>
                     <button onClick={this.SaveEditComment}>save Comment</button>
                     <br/>
+                    <IconButton onClick={this.back} >   <BiArrowBack/>   </IconButton>
                 </div>
             );
         }

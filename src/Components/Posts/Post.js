@@ -1,110 +1,147 @@
+import axios from "axios";
 import React from 'react';
 import "../Stylies/posts.css"
-import {Link} from 'react-router-dom'
 import "../Stylies/Tags.css"
-import { FaReact,FaBeer} from 'react-icons/fa';
-import {FiAlertOctagon} from "react-icons/fi";
-import {BsStopFill,AiFillDelete} from "react-icons/all";
-import {colors, IconButton} from '@material-ui/core';
-import green from "@material-ui/core/colors/green";
-import {AiFillEdit,AiFillFileText,AiFillBook} from "react-icons/all";
-
-import axios from "axios";
+import {Link} from 'react-router-dom'
+import {IconButton} from '@material-ui/core';
+import {AiFillFileText} from "react-icons/all";
+import {AiFillAlert,AiFillCiCircle,AiFillCreditCard,BiArrowBack,CgAdd,DiAndroid,Gi3DHammer,BsJustify,AiFillProfile,
+AiOutlineKey,DiAngularSimple,MdKeyboardHide,AiFillQuestionCircle,SiSafari,AiOutlineComment
+,CgKeyhole,BiJoystick,FaFax,AiFillZhihuCircle,DiAptana,GiPathDistance,VscLaw,
+GiF1Car,BiChevronLeftSquare,AiFillPauseCircle,IoLogoDesignernews,MdSpeakerNotesOff,
+GiNightSky,CgArrowLongDown,MdKeyboard,CgDanger,SiIata,AiFillAlipayCircle,MdPictureAsPdf,GiPokerHand,
+BiCertification,RiSoundModuleFill,MdBrokenImage,WiLunarEclipse,FaYenSign,GiOakLeaf} from "react-icons/all";
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import Tag from "./Tag";
-//import Tags from "react-native-tags-input";
+import Popup from "./Popup";
+
 export default class Post extends React.Component{
     constructor(props) {
         super(props);
 
-        const {onSaveTags, onSavePost, post, myPost,
-            title, content, published, author, imageUrl, id, isLoggedIn,myTags} = this.props
+        const {onSaveTags, onSavePost, post, myPost,fromSearch,
+            title, content, published, author, imageUrl, id, isLoggedIn,myTags,watchs, forhome,comments} = this.props
         this.state ={
             resp: false,
+            tags: null,
+            postId: id,
+            post: post,
+            title: title,
+            myTags:myTags,
+            watchs:watchs,
+            myPost: myPost,
+            author: author,
+            content: content,
+            forhome: forhome,
+            comments:comments,
+            imageUrl: imageUrl,
+            published: published,
+            fromSearch:fromSearch,
+            isLoggedIn: isLoggedIn,
             onSaveTags: onSaveTags,
             onSavePost: onSavePost,
-            post: post,
-            myPost: myPost,
-            title: title,
-            content: content,
-            published: published,
-            author: author,
-            imageUrl: imageUrl,
-            postId: id,
-            isLoggedIn: isLoggedIn,
-            myTags:myTags,
-            tags: null,
-            fromSearch:this.props.fromSearch,
+
+
+
+            showPopup: false
         }
 
     }
 
+    togglePopup() {
+        this.setState({
+            showPopup: !this.state.showPopup
+        });
+    }
+
 
     componentDidMount() {
-        const {postId, fromSearch} = this.state
-        //const url = "http://localhost:5000/tags/" + postId;
-         const url = "/tags/" + postId
-        axios.get(url)
+        const {postId} = this.state
+        const Url = "http://localhost:5000/tags/" + postId;
+         //const Url = "/tags/" + postId
+        axios.get(Url)
             .then((res) => {
                 if (res.status === 200) {
-                    // console.log("this res ==" + res.data)
                     this.setState({
                         tags: res.data,
                         resp: true,
                     });
-                    // console.log("the tags ==" + this.state.tags)
-                    //this.getTags(this.state.id)
+
                 }
             })
             .catch((err) => {
                 this.setState({
-                    tags: [],
-                    resp: true,
+                    // tags: [],
+                    resp: false,
                 })
-                console.log(err)
+                 console.log(err)
             });
     }
 
 
    render() {
-       if (this.state && this.state.tags) {
-            const {tags,resp,onSaveTags,myTags} = this.state
+       const {tags,title,content,published,author,watchs,post,onSavePost,postId,resp,onSaveTags,imageUrl,myTags,forhome,comments} = this.state
+       // if (this.state) {
+
            return (
                <div className="post">
-                   <img className="post-image" src={this.props.imageUrl} alt="next time add Url"/>
-                   <h4>{this.props.title} </h4>
-                   <h5>{this.props.content}</h5>
-                   <h5>This post has been published {this.props.published} by {this.props.author}</h5>
+                   <img  className="post-image" src={imageUrl} alt="next time add img"/>
+                   <h4>{title} </h4>
+                   <h5>{content}</h5>
+                   <h5>This post has been published {published}  </h5>
+                    <p/> by
+                   {forhome &&
+                     <Link to={(props) => `postsof/${author}`}> {author}</Link>
+                   }
+                   {!forhome &&  <b>  {author}</b> }
+                   {/*<h5> <VisibilityIcon />{watchs}</h5>*/}
+
+                   {resp && tags.map(((tag, index) =>
+
+                       <th key={`${tag.name}${index}`}>
+                           <div>
+
+                               <Link
+                                   onClick={(props)=> {onSaveTags(tag) }}
+                                   to={(props) => `/searchtags/${tag.name}`}>
+                                     <button style={{color:"withe"}} type="button"> # {tag.name}
+                                   </button>
+                               </Link>
+
+                           </div>
+                       </th>))
+                   }
 
                    <div>
-                       {resp && tags.map(((tag, index) =>
-                           <Tag
-                               key={index}
-                               myTags={myTags}
-                               singleTag={tag}
-                               onSaveTags={onSaveTags}
-                               postId={tag.post_id}
-                               name={tag.name}
-                               id={tag.id}
-                               tag={tag}
 
-                           />))
+                       <IconButton style={{color:"red"}}  onClick={this.togglePopup.bind(this)} > <VisibilityIcon /></IconButton>{watchs}
+                       {this.state.showPopup ?
+                           <Popup
+                               author={author}
+                               postId={this.state.postId}
+                               closePopup={this.togglePopup.bind(this)}
+                           />
+                           : null
                        }
-
                    </div>
 
-                   <IconButton>  <Link
-                       onClick={(props) => {this.props.onSavePost(this.props.post)}}
-                       to={(props) => `/post/${this.props.id}`}>
-                        <AiFillFileText/>
-                   </Link>
-                     </IconButton>
+
+
+                   <IconButton>
+
+                       <Link onClick={(props) => {onSavePost(post,tags)}  } to={(props) => `/post/${postId}`}>
+                           <AiOutlineComment/>
+                       </Link>
+                   </IconButton>  {comments}
+
+
 
                </div>
 
            );
-       } else {
-           return null
-       }
+       // } else {
+       //     return null
+       // }
    }
 
 }
