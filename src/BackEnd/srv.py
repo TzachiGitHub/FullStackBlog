@@ -16,14 +16,13 @@ import mysql.connector, mysql.connector.pooling
 #      pool_name="pool",
 #  )
 pool = mysql.connector.pooling.MySQLConnectionPool(
-   host="localhost",
-   user="root",
-   passwd="Beni2020",
-   database="beni",
-   buffered=True,
-  pool_size=30
+    host="localhost",
+    user="root",
+    passwd="Beniandsara2020",
+    database="beni",
+    buffered=True,
+    pool_size=31,
 )
-
 
 app = Flask(__name__)
 CORS(app)
@@ -43,6 +42,7 @@ def before_request():
 def teardown_request(exception):
     g.db.close()
 
+
 @app.route('/', methods=['GET'])
 def main():
     return app.send_static_file("index.html")
@@ -51,8 +51,6 @@ def main():
 @app.route('/api/alive', methods=['GET'])
 def alive_check():
     return "Alive!"
-
-
 
 
 @app.route('/login', methods=['POST'])
@@ -85,6 +83,7 @@ def login():
     cursor.close()
     return resp
 
+
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
@@ -104,9 +103,9 @@ def signup():
     cursor.close()
     return "resp"
 
+
 @app.route('/usercheck/<useremail>', methods=['GET'])
 def checkr(useremail):
-
     query = "select id from users where user_email = %s"
     values = (useremail,)
     cursor = g.db.cursor()
@@ -149,6 +148,7 @@ def login_google():
     cursor.close()
     return resp
 
+
 @app.route('/signupgoogle', methods=['POST'])
 def signupgoogle():
     data = request.get_json()
@@ -182,16 +182,9 @@ def signupgoogle():
     cursor.close()
     return resp
 
-    
-
-
-
-
-
 
 @app.route('/logout', methods=['POST'])
 def logout():
-
     data = request.get_json()
     id = data['userId']
     query = "delete from sessions where user_id=%s"
@@ -202,10 +195,11 @@ def logout():
     cursor.close()
     return "success"
 
+
 @app.route('/latest/<num>', methods=['GET'])
 def get_latest(num):
     query = "SELECT id from posts where  latest = %s"
-    value =(num,)
+    value = (num,)
     cursor = g.db.cursor()
     cursor.execute(query, value)
     records = cursor.fetchone()
@@ -234,8 +228,6 @@ def get_mostpopular(num):
     return get_post(records[int(num) - 1][0])
 
 
-
-
 # @app.route('/post/<id>', methods=['GET', 'POST'])
 # def manage_requests2(id):
 #     if request.method == 'GET':
@@ -258,6 +250,7 @@ def get_post(id):
     cursor.close()
     return json.dumps(dict(zip(header, record)))
 
+
 @app.route('/post/<id>', methods=['POST'])
 def add_to_counter(id):
     data = request.get_json()
@@ -267,7 +260,6 @@ def add_to_counter(id):
     cursor.execute(query, value)
     g.db.commit()
     cursor.close()
-
 
     query = "select latest from posts where id = %s"
     value = (id,)
@@ -280,13 +272,11 @@ def add_to_counter(id):
         return "success to add counter "
     cursor.close()
 
-
     query1 = "update posts set latest = case latest when 1 then 2 when 2 then 3 when 3 then 0 else latest end"
     cursor = g.db.cursor()
-    cursor.execute(query1,)
+    cursor.execute(query1, )
     g.db.commit()
     cursor.close()
-
 
     query4 = "update posts set latest = 1 where id = %s"
     value4 = (id,)
@@ -295,10 +285,8 @@ def add_to_counter(id):
     g.db.commit()
     cursor.close()
 
-
-
-
     return "success to add counter "
+
 
 @app.route('/addtowatchs/<id>', methods=['POST'])
 def add_to_watchs(id):
@@ -327,6 +315,7 @@ def add_to_watchs(id):
 
     return "add user watch"
 
+
 @app.route('/watchs/<id>', methods=['GET'])
 def get_all_watchs(id):
     query = "select name, times from watchs where post_id=%s"
@@ -334,7 +323,6 @@ def get_all_watchs(id):
     cursor = g.db.cursor()
     cursor.execute(query, value)
     records = cursor.fetchall()
-
 
     if not records:
         cursor.close()
@@ -347,9 +335,6 @@ def get_all_watchs(id):
     return json.dumps(data)
 
 
-
-
-
 @app.route('/posts', methods=['GET'])
 def get_all_posts():
     query = "select id, title, content, published, author, imageurl, author_id, watchs, comments from posts"
@@ -359,7 +344,6 @@ def get_all_posts():
     if not records:
         cursor.close()
         abort(401)
-
 
     header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watchs', 'comments']
     data = []
@@ -377,7 +361,6 @@ def get_all_tags(postId):
     cursor.execute(query, value)
     records = cursor.fetchall()
 
-
     if not records:
         cursor.close()
         abort(401)
@@ -393,7 +376,8 @@ def get_all_tags(postId):
 def add_post():
     data = request.get_json()
     query = "insert into posts (title, content, published, author, imageurl, author_id ,watchs, latest, comments) values (%s, %s, %s, %s, %s, %s, %s, %s,%s)"
-    values = (data['title'], data['content'], data['published'], data['username'], data['imageUrl'], data['userId'], data['watchs'], data['latest'], data['comments'])
+    values = (data['title'], data['content'], data['published'], data['username'], data['imageUrl'], data['userId'],
+              data['watchs'], data['latest'], data['comments'])
     cursor = g.db.cursor()
     cursor.execute(query, values)
     g.db.commit()
@@ -435,14 +419,12 @@ def get_post(id):
 @app.route('/editpost', methods=['POST'])
 def edit_post():
     data = request.get_json()
-
-    query = "update posts set title=%s, content=%s, published=%s, author=%s, imageurl=%s, author_id=%s ,watchs = 0 where id=%s"
-    values = (data['title'], data['content'], data['published'], data['author'], data['imageUrl'], data['authorId'], data['postId'])
+    query = "update posts set title=%s, content=%s, published=%s, imageurl=%s, watchs=%s where id=%s"
+    values = (data['title'], data['content'], data['published'],  data['imageUrl'], data['watchs'], data['postId'])
     cursor = g.db.cursor()
     cursor.execute(query, values)
     g.db.commit()
     cursor.close()
-
 
     queryForDeleteTags = "delete from tags where post_id =%s"
     valuesForDeleteTags = (data['postId'],)
@@ -452,27 +434,34 @@ def edit_post():
     cursor.close()
 
     arrayTags = data['arrayTags']
+    print("arrayTags ==")
+    print(len(arrayTags))
+
     for r in arrayTags:
         queryForTags = "insert into tags (name, post_id) values (%s,%s)"
         valuesForTags = (r, data['postId'])
+        print("r ==")
+        print(r)
         cursor = g.db.cursor()
         cursor.execute(queryForTags, valuesForTags)
         g.db.commit()
         cursor.close()
 
     query = "delete from watchs where post_id=%s"
-    values = (data['postId'])
+    values = (data['postId'],)
     cursor = g.db.cursor()
     cursor.execute(query, values)
     g.db.commit()
     cursor.close()
     return "success edit post "
 
+
 @app.route('/editcomment', methods=['POST'])
 def edit_comment():
     data = request.get_json()
     query = "update comments set title=%s, content=%s, author=%s, author_id=%s, post_id=%s ,published=%s  where id=%s"
-    values = (data['title'], data['content'],  data['author'], data['authorId'], data['postId'], data['published'], data['id'])
+    values = (
+    data['title'], data['content'], data['author'], data['authorId'], data['postId'], data['published'], data['id'])
     cursor = g.db.cursor()
     cursor.execute(query, values)
     g.db.commit()
@@ -543,6 +532,8 @@ def get_comment(id):
 @app.route('/deletepost', methods=['POST'])
 def delete_post_and_comments():
     data = request.get_json()
+    print("data == ")
+    print(data)
     postId = data['postId']
     queryComment = "delete from comments where post_id =%s"
     value = (postId,)
@@ -573,7 +564,6 @@ def delete_post_and_comments():
     return "Succeeded to delete post"
 
 
-
 @app.route('/deletecomment', methods=['POST'])
 def delete_comments():
     data = request.get_json()
@@ -591,7 +581,6 @@ def delete_comments():
     cursor.execute(query, value)
     g.db.commit()
     cursor.close()
-
 
     return "Succeeded to delete comment"
 
@@ -613,6 +602,7 @@ def get_all_posts_for_search_content(wordsearch):
         data.append(dict(zip(header, r)))
     cursor.close()
     return json.dumps(data)
+
 
 @app.route('/titlesearch/<wordsearch>', methods=['GET'])
 def get_all_posts_for_search_title(wordsearch):
@@ -670,8 +660,6 @@ def get_all_posts_for_user(username):
         data.append(dict(zip(header, r)))
     cursor.close()
     return json.dumps(data)
-
-
 
 
 if __name__ == "__main__":

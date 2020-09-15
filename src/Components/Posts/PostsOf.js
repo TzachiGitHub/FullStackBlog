@@ -1,22 +1,19 @@
 import React from "react";
 import axios from "axios";
 import Post from "./Post";
-
+import {CardDeck} from "react-bootstrap";
 
 
 export default class PostsOf extends React.Component {
     constructor(props) {
         super(props);
-        const {onSavePost, isLoggedIn, onSaveTags,MyPost} = this.props
+        const {onSavePost,onSaveTags} = this.props
         this.state = {
-           // MyPost:MyPost,
-            author:this.props.match.params.username,
-            postsofuser: null,
             byserach:false,
+            postsofuser: null,
             onSavePost:onSavePost,
-            // isLoggedIn:isLoggedIn,
             onSaveTags:onSaveTags,
-            // forSearch: this.props.match.params.word,
+            author:this.props.match.params.username,
         }
     }
 
@@ -49,24 +46,25 @@ export default class PostsOf extends React.Component {
 
             return (
                 <div>
+                    <CardDeck>
                     {postsofuser.map(((post, index) =>
                         <Post
                             key={index}
                             id={post.id}
-                            onSaveTags={onSaveTags}
-                            onSavePost={onSavePost}
                             post={post}
-                            byserach={byserach}
                             MyPost={MyPost}
                             title={post.title}
+                            byserach={byserach}
                             author={post.author}
                             content={post.content}
+                            onSaveTags={onSaveTags}
+                            onSavePost={onSavePost}
                             isLoggedIn={isLoggedIn}
                             imageUrl={post.imageUrl}
                             published={post.published}
 
                         />))
-                    }
+                    }</CardDeck>
                 </div>)
         }else {
             return <p> Loading Search Component..</p>

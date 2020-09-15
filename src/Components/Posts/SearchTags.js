@@ -9,13 +9,14 @@ export default class SearchTags extends React.Component {
         super(props);
         const {onSavePost, isLoggedIn, onSaveTags} = this.props
         this.state = {
+            resp:false,
             PostsFromSearch:null,
             respFromSearch: null,
-            forSearch: this.props.match.params.word,
             onSavePost: onSavePost,
             onSaveTags:onSaveTags,
             isLoggedIn:isLoggedIn,
-            resp:false,
+            forSearch: this.props.match.params.word,
+
         }
     }
 

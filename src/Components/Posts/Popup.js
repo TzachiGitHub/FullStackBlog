@@ -1,7 +1,7 @@
 import React from 'react';
-import "../Stylies/posts.css"
 import axios from "axios";
-import {Link} from "react-router-dom";
+import "../Stylies/posts.css"
+
 class Popup extends React.Component {
 
     constructor(props) {
@@ -35,15 +35,10 @@ class Popup extends React.Component {
             });
     }
     render() {
-        // alert("this.stat = " + JSON.stringify(this.state.watchs))
-
-
         return (
             <div className='popup'>
                 <div className='popup\_inner'>
 
-
-                    <h3 style={{ color: "red" }}>In the general calculation we do not count the number of times the owner of the post watched.</h3>
                     {this.state.resp && this.state.watchs.map(((user, index) =>
 
                         <ul  key={`${user.name}${index}`}> <br/>
@@ -60,16 +55,6 @@ class Popup extends React.Component {
 
                         </ul>))
                     }
-
-
-
-
-
-
-
-
-
-
 
                     <button onClick={this.props.closePopup}>close me</button>
                 </div>

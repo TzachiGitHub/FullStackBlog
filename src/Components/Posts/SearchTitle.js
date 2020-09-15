@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Post from "./Post";
+import {CardDeck} from "react-bootstrap";
 
 
 
@@ -47,7 +48,9 @@ export default class SearchTitle extends React.Component {
 
             return (
                 <div>
+                    <CardDeck>
                     {respFromSearch.map(((post, index) =>
+
                         <Post
                             key={index}
                             id={post.id}
@@ -62,8 +65,8 @@ export default class SearchTitle extends React.Component {
                             imageUrl={post.imageUrl}
                             published={post.published}
 
-                        />))
-                    }
+                        /> ))
+                    }</CardDeck>
                 </div>)
         }else {
             return <p> Loading Search Component..</p>

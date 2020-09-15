@@ -64,7 +64,7 @@ export default class EditComment extends React.Component {
                         post: [res.data],
                     });
                     // this.props.history.push("/")
-                    this.props.history.push("/post/" + this.state.postId)
+                    this.props.history.push("/")
                 }
             })
             .catch((err) => {

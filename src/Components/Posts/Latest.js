@@ -1,9 +1,7 @@
-import React, {Component, useEffect} from 'react';
-import "../Stylies/posts.css"
 import axios from 'axios';
 import "../Stylies/posts.css";
 import SinglePost from "./SinglePost";
-
+import React, {Component, useEffect} from 'react';
 
 
 export default class Latest extends Component {
@@ -28,7 +26,7 @@ export default class Latest extends Component {
 
 
     componentDidMount () {
-        const {num} = this.state
+        const {num,onSavePost} = this.state
         const Url = "http://localhost:5000/latest/" + Number(num)
         //const Url = "/latest/" + Number(num)
         axios.get(Url)
@@ -42,18 +40,12 @@ export default class Latest extends Component {
                     })
 
                 }
-                useEffect(() =>this.props.onSavePost(res.data) );
+                useEffect(() => onSavePost(res.data) );
             })
             .catch(err => {
                 console.error(err);
             });
     }
-
-
-
-
-
-
 
 
     render() {

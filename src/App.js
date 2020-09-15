@@ -108,7 +108,7 @@ export default class App extends Component{
         return (
             <div className = "app-header">
                  <Router>
-                     <Header username={username} onLogout={this.onLogout} isLoggedIn={isLoggedIn}/>
+                     <Header onSaveTags={this.onSaveTags} onSavePost={this.onSavePost} username={username} onLogout={this.onLogout} isLoggedIn={isLoggedIn}/>
                      <Switch>
                          <Route path="/aboutme" component={AboutMe}/>
                          <Route path="/logout" component={this.onLogout}/>
@@ -129,7 +129,11 @@ export default class App extends Component{
                          <Route exact path="/mostpopular/:num" component={(props)=> <MostPopular {...props} username={username} MyPost={MyPost} isLoggedIn={isLoggedIn} userId={userId} MyComment={MyComment} onSavePost={this.onSavePost} onSaveComment={this.onSaveComment} />}/>
                          <Route exact path="/" component={(props)=>
                              <Home
+                                 {...props}
+                                 MyComment={MyComment}
                                  MyTags={MyTags}
+                                 username={username}
+                                 onSaveComment={this.onSaveComment}
                                  onSaveTags={this.onSaveTags}
                                  onSavePost={this.onSavePost}
                                  isLoggedIn={isLoggedIn}

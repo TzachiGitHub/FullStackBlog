@@ -1,6 +1,6 @@
-//yes
 import React from 'react';
 import axios from 'axios';
+
 
 export default class Signup extends React.Component {
     constructor(props) {

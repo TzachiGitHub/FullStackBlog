@@ -2,8 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import '../Stylies/App.css';
 import LoginGoogle from "./LoginGoogle";
-import FacebookLogin from 'react-facebook-login';
-import LoginFacebook from "./LoginFacebook";
 
 
 export default class Login extends React.Component {
@@ -14,8 +12,10 @@ export default class Login extends React.Component {
             username: null,
             password: null,
             props:this.props,
+            alert:null,
         }
     }
+
 
     changeUsername = (e) => {
         this.setState({
@@ -49,6 +49,7 @@ export default class Login extends React.Component {
                         username:username,
                         password:password,
                     })
+
                     alert("Success: user logged in.")
                     props.history.push('/')
                 }

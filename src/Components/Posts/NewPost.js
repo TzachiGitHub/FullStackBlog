@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import '../Stylies/NewPost.css';
 import "../Stylies/Tags.css";
+import '../Stylies/NewPost.css';
 
 export default class NewPost extends React.Component {
     constructor(props) {
@@ -37,17 +37,13 @@ export default class NewPost extends React.Component {
 
 
     EditImageUrl = (e) => {
-            if (e.target.value != null){
                 this.setState({
                      imageUrl: e.target.value,
                 });
-            }else {
-                this.setState({
-                    imageUrl: new URL("//images.pexels.com/photos/1591056/pexels-photo-1591056.jpeg?auto=compress&cs=tinysrgb&h=350")
-                });
 
-            }
+
     }
+
     removeTag = (i) => {
         const newTags = [this.state.tags ];
         newTags.splice(i, 1);
@@ -79,8 +75,6 @@ export default class NewPost extends React.Component {
     }
 
 
-
-
     addPost = (tags) => {
         const {userId,title,content,username,imageUrl} =this.state
         const Url = "http://localhost:5000/newpost";
@@ -107,6 +101,7 @@ export default class NewPost extends React.Component {
                 }
             })
             .catch((err) => {
+                alert("Err: ")
                 this.props.history.push('/')
                 console.log(err)
             });
@@ -116,16 +111,14 @@ export default class NewPost extends React.Component {
 
     render() {
         const { tags } = this.state;
-        console.log(tags)
-        console.log("this.stat = " + JSON.stringify(tags))
 
         return (
             <div>
                 <h2>Create New Post</h2>
                 <div>
                     <p>title: <input type="text" onChange={this.EditTitle} placeholder={"Enter title"} required></input><br/></p>
-                    <p> content: <input type="text" onChange={this.EditContent} placeholder={"Enter post"} required></input><br/></p>
-                    <p>image url: <input type="text" placeholder={"https://images.pexels.com/photos/1591056/pexels-photo-1591056.jpeg?auto=compress&cs=tinysrgb&h=350"} onChange={this.EditImageUrl} placeholder={"Enter Image Url"} required></input><br/></p>
+                    <p> content: <textarea type="text" onChange={this.EditContent} placeholder={"Enter post"} required></textarea><br/></p>
+                    <p>image url: <input type="link" onChange={this.EditImageUrl} placeholder={"Enter Image Url"} required></input><br/></p>
                     <div className="input-tag">
                         <ul className="input-tag__tags">
                             { tags.map((tag, i) => (
@@ -137,7 +130,6 @@ export default class NewPost extends React.Component {
                             <li className="input-tag__tags__input"><input type="text" onKeyDown={this.inputKeyDown} ref={c => { this.tagInput = c; }} /></li>
                         </ul>
                     </div>
-
 
                 </div>
 

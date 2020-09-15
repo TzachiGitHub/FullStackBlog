@@ -1,7 +1,6 @@
-//yes
 import React from "react";
-import {GoogleLogin} from 'react-google-login';
 import axios from "axios";
+import {GoogleLogin} from 'react-google-login';
 export default class LoginGoogle extends React.Component {
 
     constructor(props) {

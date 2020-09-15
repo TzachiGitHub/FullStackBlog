@@ -1,49 +1,42 @@
 import React from 'react';
 import axios from 'axios';
+import "../Stylies/Tags.css";
 import '../Stylies/NewPost.css';
 import {IconButton} from "@material-ui/core";
-import "../Stylies/Tags.css";
-import {AiOutlineSend,BiArrowBack,AiOutlineComment} from "react-icons/all";
-
-
+import {AiOutlineSend,BiArrowBack} from "react-icons/all";
 
 
 export default class EditPost extends React.Component {
     constructor(props) {
         super(props);
-         // console.log("this props ==" + JSON.stringify(this.props.MyTags))
         this.state = {
+            tags:null,
+            resp: null,
+            MyTags:this.props.MyTags,
             title: props.MyPost.title,
-            content: props.MyPost.content,
-            published: props.MyPost.published,
             author: props.MyPost.author,
+            postId: this.props.MyPost.id,
+            content: props.MyPost.content,
             imageUrl: props.MyPost.imageUrl,
             authorId: props.MyPost.authorId,
-            postId: this.props.MyPost.id,
             userId: this.props.MyPost.userId,
-            MyTags:this.props.MyTags,
-            resp: null,
-            arrayTags:(this.props.MyTags != null )?this.ArrayTags(this.props.MyTags):[],
-            tags:null,
-
+            published: props.MyPost.published,
+            arrayTags:(this.props.MyTags != null ) ? this.ArrayTags(this.props.MyTags) : [],
         };
-
     }
+
     back = (e) => {
-        this.props.history.push("/post/" + this.state.postId)
+        this.props.history.push("/" )
     }
 
 
     ArrayTags = (MyTags) => {
         var arr = [];
         for (let i = 0; i <MyTags.length ; i++) {
-            arr.push( MyTags[i].name) ;
+            arr.push(MyTags[i].name) ;
         }
         return arr;
     }
-
-
-
 
     EditTitle = (e) => {
         this.setState({
@@ -69,17 +62,12 @@ export default class EditPost extends React.Component {
         console.log("newTags ==" + newTags )
         this.setState({
             arrayTags: newTags,
-
         });
-
-
     }
 
     inputKeyDown = (e) => {
         const val = e.target.value;
         if (e.key === 'Enter' && val) {
-            console.log("e==" +e)
-
             if (this.state.arrayTags.find(tag => tag.toLowerCase() === val.toLowerCase())) {
                 return;
             }
@@ -99,15 +87,16 @@ export default class EditPost extends React.Component {
         const Url = "http://localhost:5000/editpost";
        // const Url = "/editpost";
         const data = {
+            watchs:0,
             title: title,
-            content:content,
-            published:new Date().toLocaleString(),
             author:author,
-            imageUrl:imageUrl,
             userId:userId,
-            authorId:authorId,
             postId: postId,
+            content:content,
+            imageUrl:imageUrl,
+            authorId:authorId,
             arrayTags:arrayTags,
+            published:new Date().toLocaleString(),
         }
 
 
@@ -121,27 +110,24 @@ export default class EditPost extends React.Component {
                 }
             })
             .catch((err) => {
-                    alert("Error: failed to edit post.")
+                    console.log(err)
             });
+                this.props.history.push("/")
     }
 
     render() {
-        // if(this.state) {
-        const {tags} = this.state
-            const {title,content,imageUrl,MyTags,arrayTags} = this.state
-       //    console.log("this.stat = " + JSON.stringify(JSON.parse(this.props.MyTags)))
+            const {title,content,imageUrl,arrayTags} = this.state
+
             return (
                 <div>
                     <h2>Edit your Post</h2>
                     <div>
-
                         <p>title: <input defaultValue={title} type="text" onChange={this.EditTitle}
                                          required/><br/></p>
                         <p> content: <input defaultValue={content}  type="text" onChange={this.EditContent}
                                             required/><br/></p>
                         <p>imageUrl: <input defaultValue={imageUrl}  type="text" onChange={this.EditImageUrl}
                                              required/><br/></p>
-
 
                         <div className="input-tag">
                             <ul className="input-tag__tags">
@@ -154,24 +140,7 @@ export default class EditPost extends React.Component {
                                 <li className="input-tag__tags__input"><input type="text" onKeyDown={this.inputKeyDown} ref={c => { this.tagInput = c; }} /></li>
                             </ul>
                         </div>
-
-
                     </div>
-
-
-                    {/*<div className="input-tag">*/}
-                    {/*    <ul className="input-tag__tags">*/}
-                    {/*        { this.props.MyTags.map((tag, i) => (*/}
-                    {/*            <li key={i}>*/}
-                    {/*                {tag}*/}
-                    {/*                <button type="button" onClick={() => { this.removeTag(i); }}>+</button>*/}
-                    {/*            </li>*/}
-                    {/*        ))}*/}
-                    {/*        <li className="input-tag__tags__input"><input type="text" onKeyDown={this.inputKeyDown} ref={c => { this.tagInput = c; }} /></li>*/}
-                    {/*    </ul>*/}
-                    {/*</div>*/}
-
-
 
                     <IconButton onClick={this.SaveEditPost}>  <AiOutlineSend />   </IconButton>
                     <IconButton onClick={this.back} >  <BiArrowBack/>  </IconButton>
@@ -179,5 +148,4 @@ export default class EditPost extends React.Component {
                 </div>
             );
         }
-    // }
 }

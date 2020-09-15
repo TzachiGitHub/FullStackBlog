@@ -10,16 +10,15 @@ export default class DeletePost extends React.Component {
             postId: this.props.MyPost.id,
             userId: this.props.userId,
             resp: null
-
         };
     }
 
-
     NoDeletePost = (e) => {
-        this.props.history.push("/post/" + this.state.postId)
+        this.props.history.push("/" )
     }
+
     DeletePost = (e) => {
-        const {authorId,postId,resp} = this.state
+        const {authorId,postId} = this.state
         const Url = "http://localhost:5000/deletepost";
         //const Url = "/deletepost";
         const data = {
@@ -32,7 +31,7 @@ export default class DeletePost extends React.Component {
                     this.setState({
                         resp: "Success: succeed to delete post.",
                     });
-                    alert(resp)
+                    alert(this.state.resp)
                     this.props.history.push("/")
                 }
             })
@@ -41,6 +40,7 @@ export default class DeletePost extends React.Component {
                     post: [],
                     resp: "Error: failed to delete post."
                 });
+                alert(this.state.resp)
             });
     }
 

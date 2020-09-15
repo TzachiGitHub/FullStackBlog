@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Post from "./Post";
+import {CardDeck} from "react-bootstrap";
 
 
 
@@ -9,8 +10,8 @@ export default class SearchContent extends React.Component {
         super(props);
         const {onSavePost, isLoggedIn, onSaveTags,MyPost} = this.props
         this.state = {
-            respFromSearch: null,
             MyPost:MyPost,
+            respFromSearch: null,
             onSavePost: onSavePost,
             isLoggedIn: isLoggedIn,
             onSaveTags:onSaveTags,
@@ -40,32 +41,28 @@ export default class SearchContent extends React.Component {
     }
 
 
-
-
-
-
-
     render() {
         const {respFromSearch,onSavePost,isLoggedIn,onSaveTags,MyPost} = this.state
         if (this.state && respFromSearch) {
             return (
                 <div>
-                    {respFromSearch.map(((post, index) =>
-                        <Post
-                            post={post}
-                            key={index}
-                            id={post.id}
-                            MyPost={MyPost}
-                            title={post.title}
-                            author={post.author}
-                            content={post.content}
-                            isLoggedIn={isLoggedIn}
-                            onSaveTags={onSaveTags}
-                            onSavePost={onSavePost}
-                            imageUrl={post.imageUrl}
-                            published={post.published}
-                        />))
-                    }
+                    <CardDeck>
+                        {respFromSearch.map(((post, index) =>
+                            <Post
+                                post={post}
+                                key={index}
+                                id={post.id}
+                                MyPost={MyPost}
+                                title={post.title}
+                                author={post.author}
+                                content={post.content}
+                                isLoggedIn={isLoggedIn}
+                                onSaveTags={onSaveTags}
+                                onSavePost={onSavePost}
+                                imageUrl={post.imageUrl}
+                                published={post.published}
+                            />))
+                    }</CardDeck>
                 </div>)
         }else {
             return <p> Loading Search Component..</p>

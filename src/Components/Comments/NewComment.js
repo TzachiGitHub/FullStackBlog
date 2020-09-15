@@ -12,19 +12,22 @@ export default class NewComment extends React.Component {
         super(props);
 
         this.state = {
-            title: null,
-            content: null,
-            published:null,
-            MyComment:null,
-            MyPost: this.props.MyPost,
-            postId:this.props.MyPost.id,
-            username:this.props.username,
-            authorId: this.props.MyPost.authorId,
+             title: null,
+             content: null,
+             published:null,
+             MyComment:null,
+             MyPost: this.props.MyPost,
+             postId:this.props.MyPost.id,
+             username:this.props.username,
+             authorId: this.props.MyPost.authorId,
+
 
         };
+        console.log("tags" + JSON.stringify(this.props))
     }
+
     back = (e) => {
-        this.props.history.push("/post/" + this.state.postId)
+        this.props.history.push("/")
     }
 
 
@@ -62,7 +65,8 @@ export default class NewComment extends React.Component {
                         MyComment: [res.data],
                         resp: "Success: user add comment.",
                     });
-                      this.props.history.push('/post/'+ postId )
+                      // this.props.history.push("/" )
+                    this.props.history.push("/post/" + this.state.postId)
                 }
             })
             .catch((err) => {

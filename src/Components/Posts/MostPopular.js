@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import "../Stylies/posts.css";
 import SinglePost from "./SinglePost";
@@ -35,7 +34,7 @@ export default class MostPopular extends Component {
             .then(res => {
                 if (res.status === 200) {
                     this.setState({
-                       MyPost: res.data,
+                        MyPost: res.data,
                         resp: true,
                         postId:res.data.id,
                     })
@@ -54,7 +53,9 @@ export default class MostPopular extends Component {
         if (resp && this.state) {
             return(
                 <div>
-                    <SinglePost MyPost={MyPost} savePost={onSavePost} onSaveComment={onSaveComment} forpopularpost={true} postId={postId}/>
+                    <SinglePost MyPost={MyPost} savePost={onSavePost}
+                                onSaveComment={onSaveComment} forpopularpost={true} postId={postId}
+                    />
                 </div>
             );
         }else{

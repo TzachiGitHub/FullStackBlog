@@ -1,9 +1,9 @@
 import React from 'react';
-import "../Stylies/Comments.css"
-import {Link} from 'react-router-dom'
 import axios from "axios";
 import Post from "./Post";
-// import UrlTags from "../Rejistration/Urls"
+import "../Stylies/Comments.css"
+import {CardDeck} from "react-bootstrap";
+
 
 export default class Tags extends React.Component {
     constructor(props) {
@@ -22,6 +22,7 @@ export default class Tags extends React.Component {
     componentDidMount() {
         this.props.respFromSearch.map(((tag, index) => {
            const Url = "http://localhost:5000/post/" + tag.id
+            //const Url = "/post/" + tag.id
             axios.get(Url)
                 .then((res) => {
 
@@ -49,24 +50,24 @@ export default class Tags extends React.Component {
         if (true) {
             return (
                 <div>
+                    <CardDeck>
                     {this.state.resp && postsFromSearch.map(((post, index) =>
                         <Post
                             key={index}
-                            onSaveTags={onSaveTags}
-                             onSavePost={onSavePost}
                             post={post}
-                            MyPost={this.props.MyPost}
-                            title={post.title}
-                            content={post.content}
-                            published={post.published}
-                            author={post.author}
-                            imageUrl={post.imageUrl}
                             id={post.id}
-                            // isLoggedIn={isLoggedIn}
-
+                            title={post.title}
+                            author={post.author}
                             watchs={post.watchs}
+                            content={post.content}
+                            onSaveTags={onSaveTags}
+                            onSavePost={onSavePost}
+                            imageUrl={post.imageUrl}
+                            MyPost={this.props.MyPost}
+                            published={post.published}
+
                         />))
-                    }
+                    }</CardDeck>
                 </div>);
 
 

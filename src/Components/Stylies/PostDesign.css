@@ -1,0 +1,17 @@
+.root {
+    maxWidth: 345;
+}
+.media {
+    height: 100px;
+    width: 200px;
+}
+.expand {
+    transform: rotate(0deg);
+}
+.expandOpen{
+    transform: rotate(180deg);
+}
+.avatar{
+    backgroundColor:'red(500)';
+}
+

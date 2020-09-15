@@ -1,11 +1,7 @@
 import React from 'react';
-import MainSection from "./MainSection";
 import '../Stylies/Home.css';
 import Sidebar from "../Sidebar";
-import {Link} from "react-router-dom";
-
-
-
+import MainSection from "./MainSection";
 
 
 export default class Home extends React.Component{
@@ -16,9 +12,8 @@ export default class Home extends React.Component{
             respfromSearch: this.props.respfromSearch,
         }
 
+
     }
-
-
 
      handleChange = (e) => {
         this.setState({
@@ -28,31 +23,16 @@ export default class Home extends React.Component{
 
 
     render() {
-
-            const {onSavePost, isLoggedIn, onSaveTags,myTags} = this.props
-            const {forsearch} = this.state
+            const {onSavePost, isLoggedIn, onSaveTags,myTags,username,MyComment,onSaveComment} = this.props
             return (
-
                 <div>
-
                     <div className="home-main">
                         <div className="home-Section">
                             <div>
                                 <br/>
-                                <div>
-                                    search in :
-                                    <input  type="text" onChange={this.handleChange} placeholder={"Enter word to search in"}/>
-                                    <Link to={(props) => `contentsearch/${forsearch}`}>
-                                        <button type="button" > contents </button>
-                                        <Link to={(props) => `titlesearch/${forsearch}`}>
-                                            <button type="button" > titles</button>
-                                        </Link>
-                                    </Link> <br/>
-                                </div>
                             </div>
-                            <MainSection onSaveTags={onSaveTags} onSavePost={onSavePost} myTags={myTags} isLoggedIn={isLoggedIn}/>
+                            <MainSection username={username} MyComment={MyComment} onSaveComment={onSaveComment}onSaveTags={onSaveTags} onSavePost={onSavePost} myTags={myTags} isLoggedIn={isLoggedIn}/>
                         </div>
-
                         <div className="home-sidebar">
                             <Sidebar/>
                         </div>

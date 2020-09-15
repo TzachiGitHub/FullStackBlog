@@ -1,13 +1,14 @@
-import "../Stylies/posts.css"
 import axios from 'axios';
 import Post from "./Post";
+import "../Stylies/posts.css"
 import React, {Component} from 'react';
-import Popup from "./Popup";
+import {CardDeck} from "react-bootstrap";
+
 
 export default class Posts extends Component{
     constructor(props) {
         super(props);
-        const {onSavePost,isLoggedIn,onSaveTags,myTags} =this.props
+        const {onSavePost,isLoggedIn,onSaveTags,myTags,onSaveComment,username} =this.props
         this.state = {
             data: [],
             tags:null,
@@ -15,14 +16,11 @@ export default class Posts extends Component{
             resp: false,
             forhome:false,
             myTags:myTags,
+            username:username,
             onSavePost:onSavePost,
             isLoggedIn:isLoggedIn,
             onSaveTags:onSaveTags,
-
-
-
-
-
+            onSaveComment:onSaveComment,
         };
     }
 
@@ -39,8 +37,6 @@ export default class Posts extends Component{
                         forhome:true,
                         resp: true,
                     })
-
-
                 }
             })
             .catch(err => {
@@ -54,38 +50,37 @@ export default class Posts extends Component{
 
 
     render() {
-        const {onSavePost,onSaveTags ,data, resp, isLoggedIn,tags,myTags,forhome} = this.state;
+        const {onSavePost,onSaveTags ,data, resp, isLoggedIn,tags,myTags,forhome,onSaveComment,username} = this.state;
         if (this.state && resp) {
             return (
+
                     <div>
+
+                        <CardDeck>
                         {data.map(((post, index) =>
                             <Post
-                                onSaveTags={onSaveTags}
-                                key={index}
-                                onSavePost={onSavePost}
-                                post={post}
-                                forhome={forhome}
-                                myPost={this.props.MyPost}
-                                title={post.title}
-                                content={post.content}
-                                published={post.published}
-                                author={post.author}
-                                imageUrl={post.imageUrl}
-                                id={post.id}
-                                isLoggedIn={isLoggedIn}
                                 tags={tags}
+                                post={post}
+                                key={index}
+                                id={post.id}
                                 myTags={myTags}
+                                forhome={forhome}
+                                title={post.title}
+                                username={username}
                                 watchs={post.watchs}
+                                author={post.author}
+                                content={post.content}
+                                isLoggedIn={isLoggedIn}
+                                onSaveTags={onSaveTags}
+                                onSavePost={onSavePost}
+                                imageUrl={post.imageUrl}
                                 comments={post.comments}
-                            />))
-                        }
+                                myPost={this.props.MyPost}
+                                published={post.published}
+                                onSaveComment={onSaveComment}
+                             />))
 
-
-
-
-
-
-
+                        }</CardDeck>
                     </div>
                 )
         }else {

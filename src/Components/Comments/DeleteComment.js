@@ -43,8 +43,9 @@ export default class DeleteComment extends React.Component {
                     this.setState({
                         resp: "Succeed to delete comment.",
                     });
-                    alert(resp)
-                    this.props.history.push("/")
+                    alert(this.state.resp)
+                    // this.props.history.push("/")
+                    this.props.history.push("/post/" + this.state.postId)
                 }
             })
             .catch((err) => {

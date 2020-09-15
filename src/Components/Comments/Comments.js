@@ -1,7 +1,7 @@
 //yes
 import React, {Component} from 'react';
 import axios from 'axios';
-import "../Stylies/posts.css";
+// import "../Stylies/posts.css";
 import Comment from "./Comment";
 
 
@@ -33,7 +33,7 @@ export default class Comments extends Component{
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
-                        data: res.data,
+                        data: res.data.reverse(),
                         resp:true,
                     });
                 }

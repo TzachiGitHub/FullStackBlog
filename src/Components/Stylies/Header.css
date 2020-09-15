@@ -1,5 +1,5 @@
 .header-links {
-    background-color: darkgray;
+    /*background-color: darkgray;*/
     display: flex;
     justify-content: space-between;
 }
