@@ -122,9 +122,10 @@ export default class PostDesign extends React.Component {
                             {/*    }*/}
                             {/*</div>*/}
                         {/*</Typography>*/}
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {this.props.title}
+                        <Typography variant="body2"  component="p">
+                           <strong > {this.props.title}</strong>
                         </Typography>
+                        <br/>
                         <CardImg
                             src={this.props.imageUrl}
                             id="imageCard"

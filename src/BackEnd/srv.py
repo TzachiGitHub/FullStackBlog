@@ -18,7 +18,7 @@ import mysql.connector, mysql.connector.pooling
 pool = mysql.connector.pooling.MySQLConnectionPool(
     host="localhost",
     user="root",
-    passwd="Beni20",
+    passwd="Beniandsara2020",
     database="beni",
     buffered=True,
     pool_size=31,
