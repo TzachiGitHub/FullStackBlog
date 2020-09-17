@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import Post from "./Post";
 import {CardDeck} from "react-bootstrap";
+import {UrlSearchTitle} from "../Rejistration/Urls"
 
 
 
@@ -21,10 +22,10 @@ export default class SearchTitle extends React.Component {
 
     componentDidMount () {
         const {forSearch} = this.state
-       const Url = "http://localhost:5000/titlesearch/" + forSearch
-       // const Url = "/titlesearch/" +  forSearch
+       // const UrlSearchTitle = "http://localhost:5000/titlesearch/" + forSearch
+       // const UrlSearchTitle = "/titlesearch/" +  forSearch
 
-        axios.get(Url)
+        axios.get(UrlSearchTitle + forSearch)
             .then((res ) => {
                 if(res.status === 200){
                     this.setState({
@@ -48,21 +49,25 @@ export default class SearchTitle extends React.Component {
 
             return (
                 <div>
+                    <br/>
+                    <br/>
                     <CardDeck>
                     {respFromSearch.map(((post, index) =>
 
                         <Post
                             key={index}
                             id={post.id}
-                            onSaveTags={onSaveTags}
-                            onSavePost={onSavePost}
                             post={post}
                             MyPost={MyPost}
                             title={post.title}
                             author={post.author}
+                            watchs={post.watchs}
                             content={post.content}
                             isLoggedIn={isLoggedIn}
+                            onSaveTags={onSaveTags}
+                            onSavePost={onSavePost}
                             imageUrl={post.imageUrl}
+                            comments={post.comments}
                             published={post.published}
 
                         /> ))

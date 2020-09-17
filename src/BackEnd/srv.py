@@ -18,7 +18,7 @@ import mysql.connector, mysql.connector.pooling
 pool = mysql.connector.pooling.MySQLConnectionPool(
     host="localhost",
     user="root",
-    passwd="Beni2020",
+    passwd="Beni20",
     database="beni",
     buffered=True,
     pool_size=31,
@@ -237,7 +237,7 @@ def get_mostpopular(num):
 
 @app.route('/post/<id>', methods=['GET'])
 def get_post(id):
-    query = "select id, title, content, published, author, imageurl, author_id, watchs from posts where id = %s"
+    query = "select id, title, content, published, author, imageurl, author_id, watchs, comments from posts where id = %s"
     value = (id,)
     cursor = g.db.cursor()
     cursor.execute(query, value)
@@ -246,7 +246,7 @@ def get_post(id):
         cursor.close()
         return []
 
-    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watchs']
+    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watchs', 'comments']
     cursor.close()
     return json.dumps(dict(zip(header, record)))
 
@@ -432,10 +432,7 @@ def edit_post():
     cursor.execute(queryForDeleteTags, valuesForDeleteTags)
     g.db.commit()
     cursor.close()
-
     arrayTags = data['arrayTags']
-    print("arrayTags ==")
-    print(len(arrayTags))
 
     for r in arrayTags:
         queryForTags = "insert into tags (name, post_id) values (%s,%s)"
@@ -459,9 +456,10 @@ def edit_post():
 @app.route('/editcomment', methods=['POST'])
 def edit_comment():
     data = request.get_json()
+    print("data")
+    print(data)
     query = "update comments set title=%s, content=%s, author=%s, author_id=%s, post_id=%s ,published=%s  where id=%s"
-    values = (
-    data['title'], data['content'], data['author'], data['authorId'], data['postId'], data['published'], data['id'])
+    values = (data['title'], data['content'], data['author'], data['authorId'], data['postId'], data['published'], data['id'])
     cursor = g.db.cursor()
     cursor.execute(query, values)
     g.db.commit()
@@ -596,7 +594,7 @@ def get_all_posts_for_search_content(wordsearch):
         cursor.close();
         abort(401)
 
-    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watches']
+    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watchs', 'comments']
     data = []
     for r in records:
         data.append(dict(zip(header, r)))
@@ -615,7 +613,7 @@ def get_all_posts_for_search_title(wordsearch):
         cursor.close();
         abort(401)
 
-    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watchs']
+    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watchs', 'comments']
     data = []
     for r in records:
         data.append(dict(zip(header, r)))
@@ -631,11 +629,13 @@ def get_all_posts_for_search_tags(wordsearch):
     cursor.execute(query, value)
     records = cursor.fetchall()
     newrecords = list(set(records))
+    print("newrecords==")
+    print(newrecords)
     if not records:
         cursor.close()
         abort(401)
 
-    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watchs']
+    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watchs', 'latest', 'comments']
     data = []
     for r in newrecords:
         data.append(dict(zip(header, r)))
@@ -654,7 +654,7 @@ def get_all_posts_for_user(username):
         cursor.close();
         abort(401)
 
-    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watchs']
+    header = ['id', 'title', 'content', 'published', 'author', 'imageUrl', 'authorId', 'watchs', 'latest', 'comments']
     data = []
     for r in records:
         data.append(dict(zip(header, r)))

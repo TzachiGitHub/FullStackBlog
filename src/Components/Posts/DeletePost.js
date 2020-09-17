@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import '../Stylies/NewPost.css';
+import {UrlDeletePost} from"../Rejistration/Urls"
 
 
 export default class DeletePost extends React.Component {
@@ -19,13 +20,13 @@ export default class DeletePost extends React.Component {
 
     DeletePost = (e) => {
         const {authorId,postId} = this.state
-        const Url = "http://localhost:5000/deletepost";
-        //const Url = "/deletepost";
+        // const UrlDeletePost = "http://localhost:5000/deletepost";
+        //const UrlDeletePost = "/deletepost";
         const data = {
             authorId:authorId,
             postId: postId,
         }
-        axios.post(Url, data)
+        axios.post(UrlDeletePost, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
@@ -48,8 +49,11 @@ export default class DeletePost extends React.Component {
         if(this.state) {
             return (
                 <div>
+                    <br/>
+                    <br/>
                     <h2>The post will be deleted</h2>
-                    <button onClick={this.DeletePost}>Are you sure?</button>
+                    <br/>
+                    <button onClick={this.DeletePost}>Are you sure ?</button>
                     <button onClick={this.NoDeletePost}> No </button>
                     <br/>
                 </div>

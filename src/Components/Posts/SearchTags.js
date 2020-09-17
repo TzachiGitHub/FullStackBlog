@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Tags from "./Tags";
+import {UrlSearchTags} from "../Rejistration/Urls"
 
 
 
@@ -22,13 +23,14 @@ export default class SearchTags extends React.Component {
 
     componentDidMount() {
 
-        const {forSearch} =this.state
-        const Url = "http://localhost:5000/searchtags/" + forSearch
-       // const Url = "/searchtags/" + forSearch
+        const {forSearch} = this.state
+        // const UrlSearchTags = "http://localhost:5000/searchtags/" + forSearch
+       // const UrlSearchTags = "/searchtags/" + forSearch
 
 
-        axios.get(Url)
+        axios.get(UrlSearchTags + forSearch)
             .then((res) => {
+                console.log("this.stat = " + JSON.stringify(res.data))
                 if(res.status === 200) {
                     this.setState({
                         respFromSearch: res.data,
@@ -45,12 +47,15 @@ export default class SearchTags extends React.Component {
 
 
     render() {
-        const {respFromSearch,onSavePost,onSaveTags,resp} = this.state
+        const {respFromSearch,onSavePost,onSaveTags,resp,isLoggedIn} = this.state
+
         if (resp && respFromSearch) {
 
             return (
                 <div>
-                    <Tags respFromSearch = {respFromSearch} onSavePost={onSavePost} onSaveTags={onSaveTags}
+                    <br/>
+                    <br/>
+                    <Tags isLoggedIn={isLoggedIn} respFromSearch={respFromSearch} onSavePost={onSavePost} onSaveTags={onSaveTags}
                     />
 
                 </div>)

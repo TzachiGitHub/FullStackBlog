@@ -1,35 +1,33 @@
-//yes
-import React, {Component} from 'react';
 import axios from 'axios';
-// import "../Stylies/posts.css";
 import Comment from "./Comment";
+import React, {Component} from 'react';
+import {UrlComments} from "../Rejistration/Urls"
 
 
 export default class Comments extends Component{
     constructor(props) {
         super(props);
-        const {MyComment,username,userId,isLoggedIn,postId,onSaveComment} = this.props
+        const {MyComment,username,userId,MyPost,isLoggedIn,postId,onSaveComment} = this.props
         this.state = {
             data: [],
             resp: false,
             userId:userId,
             postId:postId,
+            MyPost:MyPost,
             username:username,
             MyComment:MyComment,
             isLoggedIn:isLoggedIn,
             onSaveComment:onSaveComment,
         };
-
-
     }
 
     componentDidMount () {
         const {postId} = this.state
-        const Url = "http://localhost:5000/comment/" + postId
-        //const Url = "/comment/" + postId
+        // const UrlComments = "http://localhost:5000/comment/" + postId
+        //const UrlComments = "/comment/" + postId
 
 
-        axios.get(Url)
+        axios.get(UrlComments + postId)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
@@ -50,12 +48,13 @@ export default class Comments extends Component{
 
     render() {
         if (this.state ) {
-            const {resp,data,isLoggedIn,userId,username,postId,onSaveComment,MyComment} = this.state;
+            const {resp,data,isLoggedIn,userId,username,postId,onSaveComment,MyComment,MyPost} = this.state;
             return (
-                <div>
+                <div >
                     {resp && data.map(((comment, index) =>
                         <Comment
                             key={index}
+                            MyPost={MyPost}
                             onSaveComment={onSaveComment}
                             comment={comment}
                             MyComment={MyComment}

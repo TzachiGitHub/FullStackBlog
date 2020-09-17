@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 import {GoogleLogin} from 'react-google-login';
+import {UrlLoginGoogle} from "../Rejistration/Urls"
+
 export default class LoginGoogle extends React.Component {
 
     constructor(props) {
@@ -28,9 +30,9 @@ export default class LoginGoogle extends React.Component {
     }
 
     userExists = (useremail) =>{
-       const Url = "http://localhost:5000/usercheck/" + useremail ;
-       // const Url = "/usercheck/" + useremail ;
-        axios.get(Url)
+       // const UrlLoginGoogle = "http://localhost:5000/usercheck/" + useremail ;
+       // const UrlLoginGoogle = "/usercheck/" + useremail ;
+        axios.get(UrlLoginGoogle + useremail)
             .then((res) => {
                 if (res.status === 200) {
                    this.doLoginGoogle(this.state)

@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import Post from "./Post";
 import {CardDeck} from "react-bootstrap";
+import {UrlSearchContent} from "../Rejistration/Urls"
+
 
 
 
@@ -21,10 +23,10 @@ export default class SearchContent extends React.Component {
 
     componentDidMount () {
         const {forSearch} = this.state
-        const Url = "http://localhost:5000/contentsearch/" + forSearch
-        //const Url = "/contentsearch/" +  forSearch
+        // const UrlSearchContent = "http://localhost:5000/contentsearch/" + forSearch
+        //const UrlSearchContent = "/contentsearch/" +  forSearch
 
-        axios.get(Url)
+        axios.get(UrlSearchContent  + forSearch)
             .then((res) => {
                 if(res.status === 200){
                     this.setState({
@@ -42,10 +44,13 @@ export default class SearchContent extends React.Component {
 
 
     render() {
+        console.log("this.stat = " + JSON.stringify(this.state.respFromSearch))
         const {respFromSearch,onSavePost,isLoggedIn,onSaveTags,MyPost} = this.state
         if (this.state && respFromSearch) {
             return (
                 <div>
+                    <br/>
+                    <br/>
                     <CardDeck>
                         {respFromSearch.map(((post, index) =>
                             <Post
@@ -55,11 +60,13 @@ export default class SearchContent extends React.Component {
                                 MyPost={MyPost}
                                 title={post.title}
                                 author={post.author}
+                                watchs={post.watchs}
                                 content={post.content}
                                 isLoggedIn={isLoggedIn}
                                 onSaveTags={onSaveTags}
                                 onSavePost={onSavePost}
                                 imageUrl={post.imageUrl}
+                                comments={post.comments}
                                 published={post.published}
                             />))
                     }</CardDeck>

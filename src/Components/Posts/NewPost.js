@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import "../Stylies/Tags.css";
 import '../Stylies/NewPost.css';
+import {UrlNewPost} from "../Rejistration/Urls"
+
 
 export default class NewPost extends React.Component {
     constructor(props) {
@@ -76,9 +78,9 @@ export default class NewPost extends React.Component {
 
 
     addPost = (tags) => {
-        const {userId,title,content,username,imageUrl} =this.state
-        const Url = "http://localhost:5000/newpost";
-       // const Url = "/newpost";
+        const {userId,title,content,username,imageUrl} = this.state
+        // const UrlNewPost = "http://localhost:5000/newpost";
+       // const UrlNewPost = "/newpost";
         const data = {
             watchs:0,
             latest:0,
@@ -91,7 +93,7 @@ export default class NewPost extends React.Component {
             imageUrl:imageUrl,
             published: new Date().toLocaleString(),
         }
-        axios.post(Url, data)
+        axios.post(UrlNewPost, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
@@ -114,6 +116,8 @@ export default class NewPost extends React.Component {
 
         return (
             <div>
+                <br/>
+                <br/>
                 <h2>Create New Post</h2>
                 <div>
                     <p>title: <input type="text" onChange={this.EditTitle} placeholder={"Enter title"} required></input><br/></p>
@@ -132,7 +136,7 @@ export default class NewPost extends React.Component {
                     </div>
 
                 </div>
-
+                <br/>
                 <button value={tags} onClick= {() => this.addPost(tags)}>add Post</button><br/>
             </div>
         );

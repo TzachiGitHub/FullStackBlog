@@ -4,13 +4,14 @@ import "../Stylies/Tags.css"
 import "../Stylies/posts.css"
 import "../Stylies/PostDesign.css"
 import PostDesign from "./PostDesign";
+import {UrlPost} from"../Rejistration/Urls"
 
 
 export default class Post extends React.Component{
     constructor(props) {
         super(props);
 
-        const {onSaveTags, onSavePost, post, myPost,fromSearch, title,
+        const {onSaveTags, onSavePost, post, myPost,fromSearch, title,MyPost,
                content, published, author, imageUrl, id, isLoggedIn,myTags,watchs, forhome,comments} = this.props
         this.state ={
             resp: false,
@@ -20,6 +21,7 @@ export default class Post extends React.Component{
             title: title,
             myTags:myTags,
             watchs:watchs,
+            MyPost:MyPost,
             myPost: myPost,
             author: author,
             expanded:false,
@@ -39,9 +41,9 @@ export default class Post extends React.Component{
 
     componentDidMount() {
         const {postId} = this.state
-        const Url = "http://localhost:5000/tags/" + postId;
-        //const Url = "/tags/" + postId
-        axios.get(Url)
+        // const UrlPost = "http://localhost:5000/tags/" + postId;
+        //const UrlPost = "/tags/" + postId
+        axios.get(UrlPost + postId)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
@@ -63,12 +65,18 @@ export default class Post extends React.Component{
 
     render() {
 
-        const {tags,title,content,published,author,watchs,post,onSavePost,postId,resp,onSaveTags,forhome,comments,isLoggedIn} = this.state
+        const {tags,title,content,published,author,watchs,post,onSavePost,postId,resp,onSaveTags,forhome,comments,isLoggedIn,MyPost} = this.state
          let imageUrl = this.state.imageUrl ? this.state.imageUrl : "http://picsum.photos/200/100"
 
         return (
-            <PostDesign onSaveComment={this.props.onSaveComment}username={this.props.username} isLoggedIn={isLoggedIn} tags={tags}title={title}content={content}published={published} author={author}imageUrl={imageUrl}
-                 watchs={watchs}post={post} onSavePost={onSavePost}postId={postId}resp={resp} onSaveTags={onSaveTags}forhome={forhome}comments={comments}/>
+            <div className="posts">
+                <PostDesign watchs={watchs} post={post} onSavePost={onSavePost} postId={postId}
+                            isLoggedIn={isLoggedIn} tags={tags} title={title} content={content}
+                            onSaveComment={this.props.onSaveComment}username={this.props.username}
+                            published={published} author={author} imageUrl={imageUrl} MyPost={MyPost}
+                            resp={resp} onSaveTags={onSaveTags} forhome={forhome} comments={comments}
+                />
+            </div>
         );
 
     }

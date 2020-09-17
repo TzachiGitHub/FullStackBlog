@@ -1,8 +1,8 @@
-//no
 import React from 'react';
 import axios from 'axios';
 import '../Stylies/NewPost.css';
 import {IconButton} from "@material-ui/core";
+import {UrlNewComment} from "../Rejistration/Urls"
 import {AiFillSave, BiArrowBack} from "react-icons/all";
 
 
@@ -20,14 +20,12 @@ export default class NewComment extends React.Component {
              postId:this.props.MyPost.id,
              username:this.props.username,
              authorId: this.props.MyPost.authorId,
-
-
         };
         console.log("tags" + JSON.stringify(this.props))
     }
 
     back = (e) => {
-        this.props.history.push("/")
+        this.props.history.push("/post/" + this.state.postId)
     }
 
 
@@ -46,8 +44,8 @@ export default class NewComment extends React.Component {
 
     addComment = (e) => {
         const {title,content,username,authorId,postId} = this.state
-        const Url = "http://localhost:5000/comment/" + postId;
-       // const Url = "/comment/" + postId;
+        // const UrlNewComment = "http://localhost:5000/comment/" + postId;
+       // const UrlNewComment = "/comment/" + postId;
 
         const data = {
             title:title,
@@ -57,7 +55,7 @@ export default class NewComment extends React.Component {
             postId: postId,
             published: new Date().toLocaleString(),
         }
-        axios.post(Url, data)
+        axios.post(UrlNewComment  + postId, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
@@ -82,10 +80,12 @@ export default class NewComment extends React.Component {
         return (
 
             <div>
+                <br/>
+                <br/>
                 <h2>Add comment</h2>
                 <div>
                     <p>title: <input type="text" onChange={this.EditTitle} placeholder={"Enter title"} required></input><br/></p>
-                    <p> content: <input type="text" onChange={this.EditContent} placeholder="Enter post" required></input><br/></p>
+                    <p> content: <textarea type="text" onChange={this.EditContent} placeholder="Enter content" required></textarea><br/></p>
                 </div>
                 <IconButton onClick={this.back} >  <BiArrowBack/>  </IconButton>
                 <IconButton onClick={this.addComment}  >  <AiFillSave/>   </IconButton>

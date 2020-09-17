@@ -3,7 +3,10 @@ import axios from 'axios';
 import "../Stylies/Tags.css";
 import '../Stylies/NewPost.css';
 import {IconButton} from "@material-ui/core";
+import {UrlEditPost} from "../Rejistration/Urls"
 import {AiOutlineSend,BiArrowBack} from "react-icons/all";
+import {Card, ListGroup, ListGroupItem} from "react-bootstrap";
+
 
 
 export default class EditPost extends React.Component {
@@ -84,8 +87,8 @@ export default class EditPost extends React.Component {
 
     SaveEditPost = (e) => {
         const {title,content,author,imageUrl,userId,authorId,postId,arrayTags} = this.state
-        const Url = "http://localhost:5000/editpost";
-       // const Url = "/editpost";
+        // const UrlEditPost= "http://localhost:5000/editpost";
+       // const UrlEditPost = "/editpost";
         const data = {
             watchs:0,
             title: title,
@@ -100,7 +103,7 @@ export default class EditPost extends React.Component {
         }
 
 
-        axios.post(Url, data)
+        axios.post(UrlEditPost, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
@@ -112,39 +115,71 @@ export default class EditPost extends React.Component {
             .catch((err) => {
                     console.log(err)
             });
-                this.props.history.push("/")
+                   this.props.history.push("/")
     }
 
     render() {
-            const {title,content,imageUrl,arrayTags} = this.state
-
+            const {title,content,arrayTags} = this.state
+        let imageUrl = this.state.imageUrl ? this.state.imageUrl : "http://picsum.photos/200/100"
             return (
                 <div>
-                    <h2>Edit your Post</h2>
-                    <div>
-                        <p>title: <input defaultValue={title} type="text" onChange={this.EditTitle}
-                                         required/><br/></p>
-                        <p> content: <input defaultValue={content}  type="text" onChange={this.EditContent}
-                                            required/><br/></p>
-                        <p>imageUrl: <input defaultValue={imageUrl}  type="text" onChange={this.EditImageUrl}
-                                             required/><br/></p>
+                <div>
+                    <br/>
+                    <br/>
+                    <Card style={{ width: '30rem' }}>
+                        <Card.Img style={{ width: '30rem' }} variant="top" src={imageUrl} alt="Loading Error" />
+                        <input defaultValue={imageUrl}  type="link" onChange={this.EditImageUrl}
+                               required/>
+                        <Card.Body>
+                            <Card.Title>
+                                  Title:  <input defaultValue={title} type="text" onChange={this.EditTitle} required/>
+                            </Card.Title>
 
-                        <div className="input-tag">
-                            <ul className="input-tag__tags">
-                                { arrayTags.map((tag, i) => (
-                                    <li key={i}>
-                                        {tag}
-                                        <button type="button" onClick={() => { this.removeTag(i); }}>+</button>
-                                    </li>
-                                ))}
-                                <li className="input-tag__tags__input"><input type="text" onKeyDown={this.inputKeyDown} ref={c => { this.tagInput = c; }} /></li>
-                            </ul>
-                        </div>
+                            <Card.Text >
+                                 Content: <textarea defaultValue={content}  type="text" onChange={this.EditContent} required/>
+                            </Card.Text>
+
+                        </Card.Body>
+                        <ListGroup className="list-group-flush">
+                            <ListGroupItem>
+                                <div className="input-tag">
+                                    <ul className="input-tag__tags">
+                                        { arrayTags.map((tag, i) => (
+                                            <li key={i}>
+                                                {tag}
+                                                <button type="button" onClick={() => { this.removeTag(i); }}>+</button>
+                                            </li>
+                                        ))}
+                                        <li className="input-tag__tags__input"><input type="text" onKeyDown={this.inputKeyDown} ref={c => { this.tagInput = c; }} /></li>
+                                    </ul>
+                                </div>
+                            </ListGroupItem>
+
+
+
+
+                        </ListGroup>
+                        <Card.Body>
+                            <IconButton onClick={this.SaveEditPost}>  <AiOutlineSend />   </IconButton>
+                            <IconButton onClick={this.back} >  <BiArrowBack/>  </IconButton>
+
+
+                        </Card.Body>
+                    </Card>
+                </div>
+                <div>
+
+                    <div>
+
+
+
+
+
                     </div>
 
-                    <IconButton onClick={this.SaveEditPost}>  <AiOutlineSend />   </IconButton>
-                    <IconButton onClick={this.back} >  <BiArrowBack/>  </IconButton>
+
                     <br/>
+                </div>
                 </div>
             );
         }

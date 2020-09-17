@@ -1,4 +1,4 @@
-//YES
+
 // console.log("this.stat = " + JSON.stringify(this.state.MyPost))
 import React, {Component} from 'react';
 import axios from 'axios';
@@ -23,6 +23,9 @@ import SearchTitle from "./Components/Posts/SearchTitle";
 import MostPopular from "./Components/Posts/MostPopular";
 import Latest from "./Components/Posts/Latest";
 import PostsOf from "./Components/Posts/PostsOf";
+import "../src/Components/Rejistration/Urls"
+import {UrlApp} from "./Components/Rejistration/Urls"
+
 
 
 
@@ -81,12 +84,12 @@ export default class App extends Component{
 
     onLogout = (props) => {
         const {userId,username} = this.state
-        const Url = "http://localhost:5000/logout"
-       //const Url = "/logout"
+        //const UrlApp = "http://localhost:5000/logout"
+       //constUrlApp = "/logout"
        const data = {
             userId: userId
        }
-        axios.post(Url,data)
+        axios.post(UrlApp,data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
@@ -130,13 +133,15 @@ export default class App extends Component{
                          <Route exact path="/" component={(props)=>
                              <Home
                                  {...props}
-                                 MyComment={MyComment}
+                                 MyPost={MyPost}
                                  MyTags={MyTags}
                                  username={username}
-                                 onSaveComment={this.onSaveComment}
+                                 MyComment={MyComment}
+                                 isLoggedIn={isLoggedIn}
                                  onSaveTags={this.onSaveTags}
                                  onSavePost={this.onSavePost}
-                                 isLoggedIn={isLoggedIn}
+                                 onSaveComment={this.onSaveComment}
+
                              />}
                         />
                      </Switch>

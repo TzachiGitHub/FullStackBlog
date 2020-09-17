@@ -18,11 +18,7 @@ export default class Header extends React.Component {
         };
     }
 
-    handleChange = (e) => {
-        this.setState({
-            forsearch: e.target.value
-        })
-    }
+
 
 
 
@@ -30,63 +26,97 @@ export default class Header extends React.Component {
 
     render() {
         const {isLoggedIn,username,onLogout} = this.props
-        const {forsearch} = this.state
+
         return (
+            <div className={"fixed-top"}>
+            <div className="topnav">
+
+
+                <div className="topnav-centered">
+                    <Link to="/" params={{ allPosts: true }} className="active"> Home </Link>
+                    {/*<a href="#home" className="active">Home</a>*/}
+                </div>
+
+
+                {/*<a href="#news">News</a>*/}
+                <Link to="/newpost"> New Post </Link>
+                {/*<a href="#contact">Contact</a>*/}
+                <Link to="/aboutme"> About Me </Link>
+
+
+                <div className="topnav-right">
+                    {isLoggedIn &&
+                    <Link to={(props) => `postsof/${username}`}>  hello {username}  </Link>
+                    }
+                    {isLoggedIn &&
+                    <Link to="/" onClick={onLogout} > logout  </Link>
+                    }
+                     {/*<a href="#search">Search</a>*/}
+                    {/*// <a href="#about">About</a>*/}
+                    {!isLoggedIn &&
+                     <Link to="/signup"> signup</Link>
+                    }
+                    {!isLoggedIn &&
+                    <Link to="/login"> Login </Link>
+                    }
+                </div>
+
+            </div>
+            </div>
 
 
 
-            <Navbar  fixed="top" >
-
-                    <div className="header-links">
-                        {this.AdvertisementExampleLargeLeaderboard}
-                        <div>
-                            <span className="header-link"> </span>
-                            <Link to="/" params={{ allPosts: true }}> Home </Link>
-                            <span > | </span>
-                            <Link to="/aboutme"> About Me </Link>
-                            <span > | </span>
-                            <Link to="/newpost"> New Post </Link>
-
-                            <input  type="text" onChange={this.handleChange} placeholder={"Enter word to search in"}/>
-                            <Link to={(props) => `contentsearch/${forsearch}`}>
-                                <button type="button" > contents </button>
-                                <Link to={(props) => `titlesearch/${forsearch}`}>
-                                    <button type="button" > titles </button>
-                                </Link>
-                            </Link>
-                        </div>
 
 
-                        {!isLoggedIn &&
-                        <div>
 
-                            <Link to="/signup"> signup</Link>
-                            <span>  |  </span>
-                            <Link to="/login"> Login </Link>
-                        </div>
-                        }
-
-                        {isLoggedIn &&
-                        <div>
-                            <Link to="/" onClick={onLogout} > logout </Link>
-                        </div>
-                        }
-
-                        {isLoggedIn &&
-                        <div>
-                            <Label image>
-                                hello {username}  <img src='https://react.semantic-ui.com/images/avatar/small/elliot.jpg'/>
-                            </Label>
-
-                        </div>
-
-                        }
-
-
-                    </div>
-
-                {/*</header>*/}
-            </Navbar>
+            // <Navbar  fixed="top" >
+            //
+            //         <div className="header-links">
+            //
+            //             <div>
+            //                 <span className="header-link"> </span>
+            //                 <Link to="/" params={{ allPosts: true }}> Home </Link>
+            //                 <span > | </span>
+            //                 <Link to="/aboutme"> About Me </Link>
+            //                 <span > | </span>
+            //                 <Link to="/newpost"> New Post </Link>
+            //
+            //
+            //             </div>
+            //
+            //
+            //             {!isLoggedIn &&
+            //             <div>
+            //                 <span>  |  </span>
+            //                 <Link to="/signup"> signup</Link>
+            //                 <span>  |  </span>
+            //                 <Link to="/login"> Login </Link>
+            //             </div>
+            //             }
+            //
+            //             {isLoggedIn &&
+            //             <div>
+            //                 <span>  |  </span>
+            //                 <Link to="/" onClick={onLogout} > logout </Link>
+            //             </div>
+            //             }
+            //
+            //             {isLoggedIn &&
+            //             <div>
+            //                 {/*<Label image>*/}
+            //                 <span>  |  </span>
+            //                     hello {username}
+            //                     {/*<img src='https://react.semantic-ui.com/images/avatar/small/elliot.jpg'/>*/}
+            //                 {/*</Label>*/}
+            //             </div>
+            //
+            //             }
+            //
+            //
+            //         </div>
+            //
+            //     {/*</header>*/}
+            // </Navbar>
 
 
 

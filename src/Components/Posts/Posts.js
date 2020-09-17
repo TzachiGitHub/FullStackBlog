@@ -3,17 +3,20 @@ import Post from "./Post";
 import "../Stylies/posts.css"
 import React, {Component} from 'react';
 import {CardDeck} from "react-bootstrap";
-
+import {Link} from "react-router-dom";
+import {UrlPosts} from "../Rejistration/Urls"
 
 export default class Posts extends Component{
     constructor(props) {
         super(props);
-        const {onSavePost,isLoggedIn,onSaveTags,myTags,onSaveComment,username} =this.props
+        const {onSavePost,isLoggedIn,onSaveTags,myTags,onSaveComment,username,MyPost} =this.props
         this.state = {
             data: [],
             tags:null,
-            comments:0,
+            // comments:0,
             resp: false,
+            forsearch:"",
+            MyPost:MyPost,
             forhome:false,
             myTags:myTags,
             username:username,
@@ -23,13 +26,18 @@ export default class Posts extends Component{
             onSaveComment:onSaveComment,
         };
     }
+    handleChange = (e) => {
+        this.setState({
+            forsearch: e.target.value
+        })
+    }
 
 
 
     componentDidMount () {
-       const Url = "http://localhost:5000/posts"
-        //const Url = "/posts"
-        axios.get(Url)
+      //  const UrlPosts = "http://localhost:5000/posts"
+        //const UrlPosts = "/posts"
+        axios.get(UrlPosts)
             .then(res => {
                 if (res.status === 200) {
                     this.setState({
@@ -50,11 +58,26 @@ export default class Posts extends Component{
 
 
     render() {
-        const {onSavePost,onSaveTags ,data, resp, isLoggedIn,tags,myTags,forhome,onSaveComment,username} = this.state;
+
+        const {onSavePost,onSaveTags ,data, resp, isLoggedIn,tags,myTags,forhome,onSaveComment,username,MyPost} = this.state;
+        const {forsearch} = this.state
         if (this.state && resp) {
             return (
 
                     <div>
+                        <div className="search">
+                            <input  type="text" onChange={this.handleChange} placeholder={"Enter word to search in"}/>
+                            <Link to={(props) => `contentsearch/${forsearch}`}>
+                                <button type="button" > contents </button>
+                                <Link to={(props) => `titlesearch/${forsearch}`}>
+                                    <button type="button" > titles </button>
+                                </Link>
+                            </Link>
+
+                        </div>
+                        <br/>
+                        <br/>
+
 
                         <CardDeck>
                         {data.map(((post, index) =>
@@ -63,6 +86,7 @@ export default class Posts extends Component{
                                 post={post}
                                 key={index}
                                 id={post.id}
+                                MyPost={MyPost}
                                 myTags={myTags}
                                 forhome={forhome}
                                 title={post.title}
@@ -79,6 +103,7 @@ export default class Posts extends Component{
                                 published={post.published}
                                 onSaveComment={onSaveComment}
                              />))
+
 
                         }</CardDeck>
                     </div>

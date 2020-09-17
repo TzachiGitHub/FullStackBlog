@@ -76,12 +76,10 @@ export default class PostDesign extends React.Component {
                         avatar={
 
                             <Avatar aria-label="recipe" className="avatar">
-                                {this.props.watchs}
-                            </Avatar>
+                            {this.props.watchs}
+                             </Avatar>
 
                         }
-
-
                         action={
                             <Typography>
                                 {((this.props.isLoggedIn) && (this.props.author == this.props.username))?
@@ -93,9 +91,6 @@ export default class PostDesign extends React.Component {
                                             <DropdownItem>
                                                 <Link onClick={(props) => {this.props.onSavePost(this.props.post,this.props.tags)}} to={(props)  =>`/deletepost`}> <AiFillDelete/> delete</Link>
                                                 </DropdownItem>
-
-
-
                                     </DropdownButton> : null
                                 }
                             </Typography>
@@ -184,8 +179,8 @@ export default class PostDesign extends React.Component {
                                 }
                             </Typography>
                             <Typography>
-                                <div className={"comment"}>
-                                    <Comments  MyComment={this.props.MyComment} onSaveComment={this.props.onSaveComment} username={this.props.username}  isLoggedIn={this.props.isLoggedIn} userId={this.props.userId} postId={this.props.postId}/>
+                                <div >
+                                    <Comments MyPost={this.props.MyPost} MyComment={this.props.MyComment} onSaveComment={this.props.onSaveComment} username={this.props.username}  isLoggedIn={this.props.isLoggedIn} userId={this.props.userId} postId={this.props.postId}/>
                                 </div>
                             </Typography>
 
@@ -205,6 +200,8 @@ export default class PostDesign extends React.Component {
                         </CardContent>
                     </Collapse>
                 </Card>
+
             );
+
         }
 }

@@ -2,12 +2,15 @@ import axios from 'axios';
 import "../Stylies/posts.css";
 import {Link} from 'react-router-dom'
 import React, {Component} from 'react';
-import {IconButton} from "@material-ui/core";
 import Comments from "../Comments/Comments";
+import AddIcon from "@material-ui/icons/Add";
+import {IconButton} from "@material-ui/core";
+import {UrlSinglePost} from "../Rejistration/Urls"
 import {AiFillEdit, BiArrowBack} from "react-icons/all";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import {Button, Card, ListGroup, ListGroupItem} from "react-bootstrap";
-import AddIcon from "@material-ui/icons/Add";
+
+
 
 
 export default class SinglePost extends Component {
@@ -27,15 +30,10 @@ export default class SinglePost extends Component {
                 isLoggedIn: isLoggedIn ,
                 onSaveTags:onSaveTags,
                 onSaveComment:onSaveComment,
-                imageUrl:this.props.MyPost.imageUrl,
+                // imageUrl:this.props.MyPost.imageUrl,
                 postId:(forpopularpost)? postId : this.props.match.params.id,
 
             };
-        //console.log("username ==" + this.props.history.params.MyTags.author)
-         console.log("username ==" + this.props.MyPost.imageUrl)
-        console.log("url ==" + this.state.imageUrl)
-
-
     }
 
     back = (e) => {
@@ -50,10 +48,10 @@ export default class SinglePost extends Component {
         const {postId,isLoggedIn,MyPost,userId,username} = this.state
 
             if (MyPost && isLoggedIn && this.props.MyPost.authorId != userId) {
-                const Url = "http://localhost:5000/post/" + postId;
+                // const UrlSinglePost = "http://localhost:5000/post/" + postId;
+                // const UrlSinglePost = "/post/";
 
-
-                axios.post(Url)
+                axios.post(UrlSinglePost)
                     .then((res) => {
                         if (res.status === 200) {
 
@@ -64,15 +62,15 @@ export default class SinglePost extends Component {
                     });
             }
             if(isLoggedIn){
-                const Url = "http://localhost:5000/addtowatchs/" + postId;
-                //const Url = "/addtowatchs/" + postId;
+                const UrlSinglePost = "http://localhost:5000/addtowatchs/" + postId;
+                //const UrlSinglePost = "/addtowatchs/" + postId;
                 const data = {
                     username:username,
                     one:1,
                     postId:postId,
 
                 }
-                axios.post(Url,data)
+                axios.post(UrlSinglePost,data)
                     .then((res) => {
                         if (res.status === 200) {
 
@@ -89,17 +87,16 @@ export default class SinglePost extends Component {
     }
 
     render() {
-        console.log(this.state.imageUrl)
-
         const {resp,isLoggedIn,userId,postId,username,onSaveComment,MyComment,MyTags,MyPost,onSaveTags} = this.state
         if ( this.state && MyPost) {
             const {title, content, published, author, authorId, watchs} = this.state.MyPost
             let imageUrl = this.state.imageUrl ? this.state.imageUrl : "http://picsum.photos/200/100"
 
             return (
-                <div >
-
-                    <Card style={{ width: '30rem' }}>
+                <div  >
+                    <br/>
+                    <br/>
+                    <Card className="card"  style={{ width: '30rem' }}>
                         <Card.Img style={{ width: '30rem' }} variant="top" src={imageUrl} alt="Loading Error" />
                         <Card.Body>
                             <Card.Title>{title}</Card.Title>
@@ -124,8 +121,9 @@ export default class SinglePost extends Component {
                             <ListGroupItem> This post has been published {published} by {author}</ListGroupItem>
                             <ListGroupItem>
                                 <div className={"comment"}>
-                                    <Comments  MyComment={MyComment} onSaveComment={onSaveComment} username={username}  isLoggedIn={isLoggedIn} userId={userId} postId={postId}/>*/}
-                                </div></ListGroupItem>
+                                    <Comments MyPost={MyPost} MyComment={MyComment} onSaveComment={onSaveComment} username={username}  isLoggedIn={isLoggedIn} userId={userId} postId={postId}/>
+                                </div>
+                            </ListGroupItem>
 
                         </ListGroup>
                         <Card.Body>

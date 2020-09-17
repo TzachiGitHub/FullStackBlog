@@ -2,6 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import '../Stylies/App.css';
 import LoginGoogle from "./LoginGoogle";
+import {UrlLogin} from"../Rejistration/Urls"
+
+
 
 
 export default class Login extends React.Component {
@@ -38,10 +41,10 @@ export default class Login extends React.Component {
             password:password,
         }
 
-         const Url = "http://localhost:5000/login";
-       // const Url = "/login";
+         // const UrlLogin = "http://localhost:5000/login";
+       // const UrlLogin = "/login";
 
-        axios.post(Url, data)
+        axios.post(UrlLogin, data)
             .then((res) => {
                 onLogin({isLoggedIn: true, userId: res.data.userId ,username:username, useremail:useremail,useGoogle:false})
                 if (res.status === 200) {
@@ -64,14 +67,20 @@ export default class Login extends React.Component {
         const {props,onLogin} = this.state
         return (
             <div className="container">
-                <h2 style={{backgroundColor: "lightblue"}}>Login</h2>
+                <br/>
+                <h2 >Login</h2>
+                <br/>
                 <div>
                     username: <input type="text" onChange={this.changeUsername} placeholder={"Enter name"} required></input><br/>
                     password: <input type="password" onChange={this.changePassword} placeholder="Enter Password" required ></input><br/>
+                    <br/>
+
                     <button onClick={this.doLogin}>send</button><br/>
                     {/*{this.state.resp?this.state.resp:null}*/}
                 </div>
                 <div>
+                    <br/>
+                    <br/>
                     <LoginGoogle props={props} onLogin={onLogin}  />
                 </div>
                 {/*<div>*/}

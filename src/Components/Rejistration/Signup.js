@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {UrlSignup} from"../Rejistration/Urls"
 
 
 export default class Signup extends React.Component {
@@ -43,15 +44,15 @@ export default class Signup extends React.Component {
     doSignup = (e) => {
         const {username, password,useremail,onLogin} = this.state
         if(this.isEmail(useremail) ) {
-            const Url = "http://localhost:5000/signup";
-            //const Url = "/signup";
+            // const UrlSignup = "http://localhost:5000/signup";
+            //const UrlSignup = "/signup";
 
             const data = {
                 username:username,
                 password:password,
                 useremail:useremail,
             }
-            axios.post(Url, data)
+            axios.post(UrlSignup, data)
                 .then((res) => {
                     onLogin({isLoggedIn: false, userId: res.data.userId ,username:res.data.username})
                     if (res.status === 200) {
@@ -74,11 +75,14 @@ export default class Signup extends React.Component {
     render() {
         return (
                 <div>
-                    <div>
-                    <h2 style={{backgroundColor: "silver"}}>signup  </h2>
-                    name: <input type="text" onChange={this.SaveUsername} placeholder={"Enter name"} required></input><br/>
-                    password: <input type="password" onChange={this. SavePassword} placeholder="Enter Password" required></input><br/>
-                    email: <input type="email" onChange={this. SaveEmail} placeholder = "Enter a valid Email" required></input><br/>
+                    <div className="container">
+                        <br/>
+                    <h2 >signup  </h2>
+                    <br/>
+                    <p>name:<input type="text" onChange={this.SaveUsername} placeholder={"Enter name"} required></input><br/></p>
+                    <p>email:<input type="email" onChange={this.SaveEmail}placeholder = "Enter a valid Email" required></input><br/></p>
+                    <p>pass:<input type="password" onChange={this.SavePassword}placeholder="Enter Password" required></input><br/></p>
+                <br/>
                     <button onClick={this.doSignup}>send</button><br/>
                     </div>
                 </div>

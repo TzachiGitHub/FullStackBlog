@@ -21,6 +21,12 @@
 
     /*color: black;*/
 }
+.card{
+    position:center; /* or absolute */
+    /*right: 50%;*/
+    top:10%;
+    left: 30%;
+}
 
 
 

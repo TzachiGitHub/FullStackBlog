@@ -7,14 +7,16 @@ import {CardDeck} from "react-bootstrap";
 export default class PostsOf extends React.Component {
     constructor(props) {
         super(props);
-        const {onSavePost,onSaveTags} = this.props
+        const {onSavePost,onSaveTags,isLoggedIn} = this.props
         this.state = {
             byserach:false,
             postsofuser: null,
+            isLoggedIn:isLoggedIn,
             onSavePost:onSavePost,
             onSaveTags:onSaveTags,
             author:this.props.match.params.username,
         }
+
     }
 
     componentDidMount () {
@@ -42,10 +44,13 @@ export default class PostsOf extends React.Component {
 
     render() {
         const {postsofuser,onSavePost,isLoggedIn,onSaveTags,MyPost, byserach} = this.state
-        if (this.state && postsofuser) {
 
+        if (this.state && postsofuser) {
+            console.log("this.stat = " + JSON.stringify(this.state.postsofuser))
             return (
                 <div>
+                    <br/>
+                    <br/>
                     <CardDeck>
                     {postsofuser.map(((post, index) =>
                         <Post
@@ -56,10 +61,12 @@ export default class PostsOf extends React.Component {
                             title={post.title}
                             byserach={byserach}
                             author={post.author}
+                            watchs={post.watchs}
                             content={post.content}
                             onSaveTags={onSaveTags}
                             onSavePost={onSavePost}
                             isLoggedIn={isLoggedIn}
+                            comments={post.comments}
                             imageUrl={post.imageUrl}
                             published={post.published}
 

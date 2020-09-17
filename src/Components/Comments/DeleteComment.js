@@ -1,9 +1,10 @@
-//yes
 import React from 'react';
 import axios from 'axios';
 import '../Stylies/NewPost.css';
-import {AiFillDelete,MdDeleteForever} from "react-icons/all";
 import { IconButton } from '@material-ui/core';
+import {UrlDeleteComment} from "../Rejistration/Urls"
+import {AiFillDelete,MdDeleteForever} from "react-icons/all";
+
 
 
 
@@ -23,21 +24,21 @@ export default class DeleteComment extends React.Component {
     }
 
     NoDeleteComment = (e) => {
-        this.props.history.push("/post/" + this.state.postId)
+        this.props.history.push("/")
     }
 
 
 
     DeleteComment = (e) => {
         const {commentId,resp,postId} = this.state
-        const Url = "http://localhost:5000/deletecomment";
-        // const Url = "/deletecomment"
+        // const UrlDeleteComment = "http://localhost:5000/deletecomment";
+        // const UrlDeleteComment = "/deletecomment"
 
         const data = {
             postId:postId,
             commentId:commentId,
         }
-        axios.post(Url, data)
+        axios.post(UrlDeleteComment, data)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({
@@ -45,7 +46,7 @@ export default class DeleteComment extends React.Component {
                     });
                     alert(this.state.resp)
                     // this.props.history.push("/")
-                    this.props.history.push("/post/" + this.state.postId)
+                    this.props.history.push("/")
                 }
             })
             .catch((err) => {
@@ -59,6 +60,8 @@ export default class DeleteComment extends React.Component {
         if(this.state) {
             return (
                 <div>
+                    <br/>
+                    <br/>
                     <h2>The post will be deleted</h2>
                     <IconButton onClick={this.DeleteComment}>  <AiFillDelete /> yes  </IconButton>
                     <IconButton onClick={this.NoDeleteComment}> <MdDeleteForever/> No </IconButton>
