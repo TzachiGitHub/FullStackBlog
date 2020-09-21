@@ -30,10 +30,11 @@ export default class SinglePost extends Component {
                 isLoggedIn: isLoggedIn ,
                 onSaveTags:onSaveTags,
                 onSaveComment:onSaveComment,
-                // imageUrl:this.props.MyPost.imageUrl,
+                imageUrl:this.props.MyPost.imageUrl,
                 postId:(forpopularpost)? postId : this.props.match.params.id,
 
             };
+        console.log("this.stat = = " + JSON.stringify(this.props. MyPost))
     }
 
     back = (e) => {

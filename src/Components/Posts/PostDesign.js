@@ -43,6 +43,7 @@ export default class PostDesign extends React.Component {
             showPopup: false,
         }
 
+
     }
 
     togglePopup = () => {
